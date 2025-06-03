@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longoj.top.mapper.UserCheckInMapper">
+    <resultMap id="BaseResultMap" type="com.longoj.top.model.entity.UserCheckIn">
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="yearMonth" column="yearMonth" jdbcType="VARCHAR"/>
+        <result property="bitmap" column="bitmap" jdbcType="INTEGER"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        userId, yearMonth, bitmap, createTime,updateTime
+    </sql>
+
+    <select id="isExist" resultType="java.lang.Boolean">
+        SELECT COUNT(1)
+        FROM user_check_in
+        WHERE userId = #{userId} AND yearMonth = #{yearMonth};
+    </select>
+
+    <insert id="save">
+        INSERT
+        INTO user_check_in
+            (userId, yearMonth, bitmap, createTime, updateTime)
+        VALUES(#{userId}, #{yearMonth}, 0, NOW(), NOW())
+    </insert>
+
+    <update id="updateUserCheckInByOneDay">
+        <![CDATA[
+        UPDATE user_check_in
+        SET bitmap = bitmap | (1 << #{day}-1),
+            updateTime = NOW()
+        WHERE userId = #{userId} AND yearMonth = #{yearMonth}
+        ]]>
+    </update>
+
+    <select id="getUserCheckInByUserIdAndYearMonth" resultType="com.longoj.top.model.entity.UserCheckIn">
+        select <include refid="Base_Column_List"/>
+        FROM user_check_in
+        WHERE userId = #{userId} AND yearMonth = #{yearMonth};
+    </select>
+
+    <select id="queryUserSignTotalCount" resultType="java.lang.Integer">
+        SELECT
+            BIT_COUNT(bitmap) AS checked_days
+        FROM user_check_in
+        WHERE userId = #{userId} AND yearMonth = #{yearMonth};
+    </select>
+
+    <select id="checkUserSignInByOneDay" resultType="java.lang.Boolean">
+        <![CDATA[
+        SELECT (bitmap & (1 << #{day}-1)) != 0 AS is_checked
+        FROM user_check_in
+        WHERE userId = #{userId} AND yearMonth = #{yearMonth};
+        ]]>
+    </select>
+
+</mapper>
