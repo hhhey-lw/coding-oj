@@ -18,12 +18,12 @@
 
 ### 部分页面展示
 
-![image-20250608220254725](C:\Users\韦龙\AppData\Roaming\Typora\typora-user-images\image-20250608220254725.png)
+![image-20250608220254725](readme-img/image-20250608220611330.png)
 
-![image-20250608220558710](C:\Users\韦龙\AppData\Roaming\Typora\typora-user-images\image-20250608220558710.png)
+![image-20250608220558710](readme-img/image-20250608220558710.png)
 
-![image-20250608220611330](C:\Users\韦龙\AppData\Roaming\Typora\typora-user-images\image-20250608220611330.png)
+![image-20250608220611330](readme-img/image-20250608220611330.png)
 
-![image-20250608220635367](C:\Users\韦龙\AppData\Roaming\Typora\typora-user-images\image-20250608220635367.png)
+![image-20250608220635367](readme-img/image-20250608220635367.png)
 
-![image-20250608220726830](C:\Users\韦龙\AppData\Roaming\Typora\typora-user-images\image-20250608220726830.png)
+![image-20250608220726830](readme-img/image-20250608220726830.png)
