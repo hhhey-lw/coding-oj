@@ -1,0 +1,26 @@
+server:
+  port: 8102
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: longoj-chat-end
+
+  profiles:
+    active: dev
+
+
+knife4j:
+  enable: true
+  openapi:
+    title: "Interface document"
+    version: 1.0
+    group:
+      default:
+        api-rule: package
+        api-rule-resources:
+          - com.longoj.top.controller
+logging:
+  level:
+    com.longcoding.top: DEBUG

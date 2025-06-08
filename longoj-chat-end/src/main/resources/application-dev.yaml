@@ -1,0 +1,16 @@
+spring:
+  ai:
+    dashscope:
+      api-key: "sk-4d9ac0285a4e45cc9adcc73115de3da3"
+      workspace-id: "llm-tc6cf2ai0o4spxq2"
+      chat:
+        options:
+          model: "qwen-plus"
+
+  data:
+    redis:
+      database: 1
+      host: longcoding.top
+      port: 6379
+      timeout: 5000
+      password: longcoding

@@ -1,0 +1,1 @@
+export const ChatServiceURL = "http://longcoding.top:8102/api/chat"
