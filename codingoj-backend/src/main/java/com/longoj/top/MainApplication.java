@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * 主类（项目启动入口）
  *
  */
-// @EnableScheduling
 // todo 如需开启 Redis，须移除 exclude 中的内容  - , exclude = {RedisAutoConfiguration.class}
+@EnableScheduling
 @SpringBootApplication(scanBasePackages = "com.longoj.top")
 @MapperScan("com.longoj.top.mapper")
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)

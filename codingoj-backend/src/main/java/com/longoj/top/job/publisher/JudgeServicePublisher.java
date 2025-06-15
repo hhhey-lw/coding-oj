@@ -48,6 +48,17 @@ public class JudgeServicePublisher implements RabbitTemplate.ConfirmCallback, Ra
         rabbitTemplate.convertAndSend(JudgeMQConfig.EXCHANGE_NAME, JudgeMQConfig.ROUTING_KEY, msg, correlationData);
     }
 
+    public void retrySendJudgeMessage(String msg, Long id) {
+        // 这里可以添加测试代码来验证 RabbitMQ 的连接和功能
+        rabbitTemplate.setConfirmCallback(this); // 设置 ConfirmCallback
+        rabbitTemplate.setReturnsCallback(this); // 设置 ReturnsCallback
+
+        // 发送消息到 RabbitMQ 队列
+        CorrelationData correlationData = new CorrelationData();
+        correlationData.setId(MSG_KEY_PREFIX + id);
+        rabbitTemplate.convertAndSend(JudgeMQConfig.EXCHANGE_NAME, JudgeMQConfig.ROUTING_KEY, msg, correlationData);
+    }
+
     /**
      * ConfirmCallback 实现方法。
      * 当消息发送到 Broker（Exchange）后，Broker 会回调此方法，告知生产者消息是否成功到达 Exchange。
