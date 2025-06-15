@@ -12,16 +12,12 @@
             </a-avatar>
 
             <!-- 右侧上传按钮 -->
-            <a-button
-                type="primary"
-                class="upload-btn"
+            <button
+                class="upload-btn button-class"
                 @click="triggerUpload"
             >
-              <template #icon>
-                <icon-upload />
-              </template>
               点击上传
-            </a-button>
+            </button>
 
             <!-- 隐藏的文件输入 -->
             <input
@@ -51,7 +47,7 @@
 
           <!-- 保存按钮 -->
           <div class="form-actions">
-            <a-button type="primary" style="width: 10REM;"  @click="saveBasicInfo">保存更改</a-button>
+            <button class="button-class" style="width: 10REM;"  @click="saveBasicInfo">保存更改</button>
           </div>
         </div>
       </a-tab-pane>
@@ -81,7 +77,7 @@
 
           <!-- 保存按钮 -->
           <div class="form-actions">
-            <a-button type="primary" @click="changePassword">修改密码</a-button>
+            <button class="button-class" @click="changePassword">修改密码</button>
           </div>
         </div>
       </a-tab-pane>
@@ -327,5 +323,22 @@ onMounted(() => {
 .security-section h2 {
   margin-bottom: 24px;
   color: #1d2129;
+}
+
+.button-class {
+  white-space: nowrap;
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 6REM;
+  font-size: 16px;
+}
+
+.button-class:hover {
+  background-color: #2d8a55;
+  border-color: #1c5d39;
+  cursor: pointer;
 }
 </style>

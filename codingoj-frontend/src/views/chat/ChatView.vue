@@ -1,6 +1,7 @@
 <template>
   <TDialog
-      style="z-index: 999;"
+      style="z-index: 999; max-width: 100vw"
+      top="1REM"
       :onBeforeOpen="loadUserData"
       :visible="visible"
       @update:visible="$emit('update:visible', $event)"
@@ -13,13 +14,13 @@
     <template #body>
       <TChat
           style="height: 600px"
+          class="mobile-width-chat-box"
           :clear-history="chatList.length > 0 && !isStreamLoad"
           @on-action="operation"
           @clear="clearConfirm"
       >
         <template v-for="(item, index) in chatList" :key="index">
           <TChatItem
-              variant="base"
               :avatar="item.avatar"
               :name="item.name"
               :role="item.role"
@@ -81,6 +82,16 @@ import { SystemSumIcon } from 'tdesign-icons-vue-next';
 import { CheckCircleIcon } from 'tdesign-icons-vue-next';
 import {ChatServiceURL} from '../../api/ServiceURL'
 import {UserVO} from "../../../generated";
+
+// 按需引入 TDesign 组件
+import {
+  Dialog as TDialog,
+  Button as TButton,
+  Tooltip as TTooltip,
+  Select as TSelect
+} from 'tdesign-vue-next';
+// 确保导入 TDesign 的样式
+import 'tdesign-vue-next/es/style/index.css';
 
 // 定义 props 和事件
 const props = defineProps({
@@ -170,6 +181,8 @@ const onStop = function () {
 };
 
 const inputEnter = function () {
+  // console.log(store.state.user.token)
+  // console.log(store.state.user.loginUser)
   if (store.state.user.token === '') {
     alert("请先登录！");
     return;
@@ -378,4 +391,11 @@ const loadUserData = () => {
     color: var(--td-text-color-brand);
   }
 }
+
+@media screen and (max-width: 768px) {
+  .mobile-width-chat-box {
+    width: 100vw;
+  }
+}
+
 </style>

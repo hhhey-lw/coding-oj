@@ -1,7 +1,7 @@
 <template>
   <a-space direction="vertical" size="large" class="mobile-class box-class" style="margin: 0 auto; display: flex; justify-content: center;">
     <!-- 面包屑导航 -->
-    <a-breadcrumb>
+    <a-breadcrumb class="pointer-class">
       <a-breadcrumb-item @click="toHomePage">首页</a-breadcrumb-item>
       <a-breadcrumb-item @click="toDiscussionPage">讨论</a-breadcrumb-item>
       <a-breadcrumb-item>{{postVO?.title}}</a-breadcrumb-item>
@@ -40,7 +40,7 @@
 
       <!-- 正文 Markdown -->
       <div style="margin-top: 20px">
-        <MdViewer :value="postVO?.content" preview-theme="default" />
+        <MdViewer :value="postVO?.content"/>
       </div>
     </a-card>
 
@@ -51,7 +51,7 @@
       <!-- 评论输入 -->
       <a-textarea v-model="newComment" placeholder="写下你的评论..." auto-size show-word-limit />
       <a-space style="margin-top: 8px" justify="end">
-        <a-button type="primary" size="small" @click="submitComment">发表评论</a-button>
+        <button class="send-button" @click="submitComment">发表评论</button>
       </a-space>
 
       <!-- 评论列表 -->
@@ -76,13 +76,12 @@
                 placeholder="写下你的回复..."
                 class="reply-input"
             />
-            <a-button
-                type="primary"
+            <button
                 @click="submitReply(item)"
                 class="send-button"
             >
               发送
-            </a-button>
+            </button>
           </div>
 
           <!-- 子评论列表 -->
@@ -116,13 +115,11 @@
                   placeholder="写下你的回复..."
                   class="reply-input"
               />
-              <a-button
-                  type="primary"
+              <button
                   @click="submitSubReply(item, subitem)"
-                  class="send-button"
-              >
+                  class="send-button">
                 发送
-              </a-button>
+              </button>
             </div>
           </a-comment>
         </a-comment>
@@ -476,6 +473,13 @@ const toDiscussionPage = () => {
 
 .send-button {
   white-space: nowrap;
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 6REM;
+  font-size: 16px;
 }
 
 .action {
@@ -484,10 +488,13 @@ const toDiscussionPage = () => {
 }
 
 .pagination-container {
-  //margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.pointer-class {
+  cursor: pointer;
 }
 </style>

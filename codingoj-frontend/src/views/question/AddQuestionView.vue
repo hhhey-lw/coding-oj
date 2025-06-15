@@ -1,11 +1,11 @@
 <template>
-  <a-space id="addQuestionView" direction="vertical" style="width: 90vw;">
-    <h2>创建题目</h2>
-    <a-form :model="form" label-align="left">
-      <a-form-item field="title" label="标题" style="max-width: 1000px">
+  <div id="addQuestionView"style="width: 90vw;">
+    <h2 style="text-align: center">创建题目</h2>
+    <a-form :model="form" label-align="right">
+      <a-form-item field="title" label="标题">
         <a-input v-model="form.title" placeholder="请输入标题" />
       </a-form-item>
-      <a-form-item field="tags" label="标签" style="max-width: 1000px">
+      <a-form-item field="tags" label="标签">
         <a-input-tag v-model="form.tags" placeholder="请选择标签" allow-clear />
       </a-form-item>
       <a-form-item field="difficulty" label="难度">
@@ -13,38 +13,47 @@
 <!--        <a-input v-model="form.difficulty" placeholder="请输出题目难度"/>-->
       </a-form-item>
       <a-form-item field="content" label="题目内容">
-        <MdEditor :value="form.content" :handle-change="onContentChange" />
+        <div class="editor-container">
+          <MdEditor :value="form.content" :handle-change="onContentChange" class="fullscreen-editor"/>
+        </div>
       </a-form-item>
       <a-form-item field="answer" label="答案">
-        <MdEditor :value="form.answer" :handle-change="onAnswerChange" />
+        <div class="editor-container">
+        <MdEditor :value="form.answer" :handle-change="onAnswerChange" class="fullscreen-editor" />
+        </div>
       </a-form-item>
       <a-form-item field="sourceCode" label="初始代码">
-        <MdEditor :value="form.sourceCode" :handle-change="onSourceCodeChange" />
+        <div class="editor-container">
+        <MdEditor :value="form.sourceCode" :handle-change="onSourceCodeChange" class="fullscreen-editor"/>
+        </div>
       </a-form-item>
       <a-form-item label="判题配置" :content-flex="true" :merge-props="false">
         <a-space direction="vertical">
-          <a-form-item field="judgeConfig.timeLimit" label="时间限制">
+          <a-form-item field="judgeConfig.timeLimit" label="时间限制"
+                       :label-col-props="{ span: 8, style: { whiteSpace: 'nowrap' } }">
             <a-input-number
               v-model="form.judgeConfig.timeLimit"
-              placeholder="请输入时间限制"
+              placeholder="时间限制"
               mode="button"
               min="0"
               size="large"
             />
           </a-form-item>
-          <a-form-item field="judgeConfig.memoryLimit" label="内存限制">
+          <a-form-item field="judgeConfig.memoryLimit" label="内存限制"
+                       :label-col-props="{ span: 8, style: { whiteSpace: 'nowrap' } }">
             <a-input-number
               v-model="form.judgeConfig.memoryLimit"
-              placeholder="请输入内存限制"
+              placeholder="内存限制"
               mode="button"
               min="0"
               size="large"
             />
           </a-form-item>
-          <a-form-item field="judgeConfig.stackLimit" label="堆栈限制">
+          <a-form-item field="judgeConfig.stackLimit" label="堆栈限制"
+                       :label-col-props="{ span: 8, style: { whiteSpace: 'nowrap' } }">
             <a-input-number
               v-model="form.judgeConfig.stackLimit"
-              placeholder="请输入堆栈限制"
+              placeholder="堆栈限制"
               mode="button"
               min="0"
               size="large"
@@ -62,29 +71,35 @@
           :key="index"
           no-style
         >
-          <a-space direction="vertical" >
+          <a-space direction="vertical" class="usecase-class mobile-usecase-class">
             <a-form-item
+              :label-col-props="{ span: 8, style: { whiteSpace: 'nowrap', fontSize: `12px`} }"
               :field="`form.judgeCase[${index}].input`"
-              :label="`输入用例-${index}`"
               :key="index"
+              :label="`输入用例-${index}`"
             >
               <a-textarea
+                :auto-size="false"
                 v-model="judgeCaseItem.input"
                 placeholder="请输入测试输入用例"
+                style="height: 120px;"
               />
             </a-form-item>
             <a-form-item
+              :label-col-props="{ span: 8, style: { whiteSpace: 'nowrap' } }"
               :field="`form.judgeCase[${index}].output`"
               :label="`输出用例-${index}`"
               :key="index"
             >
               <a-textarea
+                :auto-size="false"
                 v-model="judgeCaseItem.output"
                 placeholder="请输入测试输出用例"
+                style="height: 120px;"
               />
             </a-form-item>
             <a-button status="danger" @click="handleDelete(index)">
-              删除
+              删除用例-{{index}}
             </a-button>
           </a-space>
         </a-form-item>
@@ -96,12 +111,12 @@
       </a-form-item>
       <div style="margin-top: 16px" />
       <a-form-item>
-        <a-button type="primary" style="min-width: 200px" @click="doSubmit"
+        <button class="button-class" @click="doSubmit"
           >提交
-        </a-button>
+        </button>
       </a-form-item>
     </a-form>
-  </a-space>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -238,5 +253,47 @@ const onSourceCodeChange = (value: string) => {
 
 <style scoped>
 #addQuestionView {
+  max-width: 1280px;
+  margin: 0 auto;
 }
+
+.editor-container {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.button-class {
+  white-space: nowrap;
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 12REM;
+  font-size: 16px;
+}
+
+.button-class:hover {
+  background-color: #2d8a55;
+  border-color: #1c5d39;
+  cursor: pointer;
+}
+
+.usecase-class {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .mobile-usecase-class {
+    margin-bottom: 3REM;
+    flex-direction: column;
+  }
+}
+
+:deep(.bytemd-fullscreen) {
+  z-index: 999 !important;
+}
+
 </style>

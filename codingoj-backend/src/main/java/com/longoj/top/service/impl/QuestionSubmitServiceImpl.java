@@ -10,6 +10,7 @@ import com.longoj.top.common.ErrorCode;
 import com.longoj.top.constant.CommonConstant;
 import com.longoj.top.exception.BusinessException;
 import com.longoj.top.job.cycle.JudgeExecutor;
+import com.longoj.top.job.publisher.JudgeServicePublisher;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;
 import com.longoj.top.model.dto.questionsubmit.QuestionSubmitAddRequest;
 import com.longoj.top.model.dto.questionsubmit.QuestionSubmitQueryRequest;
@@ -32,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -49,8 +51,10 @@ implements QuestionSubmitService{
     @Resource
     private UserService userService;
 
+    // @Resource
+    // private JudgeExecutor judgeExecutor;
     @Resource
-    private JudgeExecutor judgeExecutor;
+    private JudgeServicePublisher judgeServicePublisher;
 
     @Override
     @Transactional
@@ -92,11 +96,14 @@ implements QuestionSubmitService{
         // 调用代码沙箱！
         QuestionSubmit questionSubmit = getById(submit.getId());
         // 放队列中，异步执行
-        judgeExecutor.pushTaskQueue(questionSubmit);
+        // judgeExecutor.pushTaskQueue(questionSubmit);
         // CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
         //     judgeService.doJudge(questionSubmit);
         // });
+        // 线程池
         // JudgeInfo judgeInfo = judgeService.doJudge(questionSubmit);
+        // 消息队列
+        judgeServicePublisher.sendDoJudgeMessage(questionSubmit);
 
         // mybatis 自动回填
         return questionSubmit.getId();
@@ -119,9 +126,9 @@ implements QuestionSubmitService{
         // 构造查询表达包装
         // 拼接查询条件
         queryWrapper.eq(StringUtils.isNotBlank(language), "language", language);
-        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "user_id", userId);
         queryWrapper.eq(ObjectUtils.isNotEmpty(status), "status", status);
-        queryWrapper.eq("isDelete", false);
+        queryWrapper.eq("is_delete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
@@ -141,6 +148,12 @@ implements QuestionSubmitService{
 
         questionSubmitVOPage.setRecords(submitVOList);
         return questionSubmitVOPage;
+    }
+
+    @Override
+    public boolean isQuestionSubmitExecuted(Long id) {
+        Integer status = getById(id).getStatus();
+        return !(status.intValue() == QuestionSubmitStatusEnum.WAITING.getStatus().intValue());
     }
 
     private QuestionSubmitVO getQuestionSubmitVO(QuestionSubmit questionSubmit, User loginUser) {

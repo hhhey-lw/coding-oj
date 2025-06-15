@@ -1,21 +1,21 @@
 <template>
-  <a-space id="addDiscussionView" direction="vertical" style="width: 90vw;">
-    <h2>发布帖子</h2>
-    <a-form :model="form" label-align="left" class="box-class">
-      <a-form-item field="title" label="标题" style="max-width: 1000px">
+  <a-space id="addDiscussionView" direction="vertical" class="box-class">
+    <h2 class="header-box">发布帖子</h2>
+    <a-form :model="form" label-align="right" class="form-box">
+      <a-form-item field="title" label="标题">
         <a-input v-model="form.title" placeholder="请输入标题" />
       </a-form-item>
-      <a-form-item field="tags" label="标签" style="max-width: 1000px">
+      <a-form-item field="tags" label="标签">
         <a-input-tag v-model="form.tags" placeholder="请选择标签" allow-clear />
       </a-form-item>
-      <a-form-item field="content" label="内容">
-        <MdEditor :value="form.content" :handle-change="onContentChange" />
+      <a-form-item field="content" label="内容" style="z-index: 999;">
+        <MdEditor :value="form.content" :handle-change="onContentChange" class="editor-box"/>
       </a-form-item>
       <div style="margin-top: 16px" />
       <a-form-item>
-        <a-button type="primary" style="min-width: 200px" @click="doSubmit"
+        <button class="button-class" @click="doSubmit"
         >发布
-        </a-button>
+        </button>
       </a-form-item>
     </a-form>
   </a-space>
@@ -58,8 +58,44 @@ const onContentChange = (value: string) => {
 
 <style scoped>
 .box-class {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
 }
+
+.header-box {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1REM;
+}
+
+.form-box {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  margin-left: -2REM;
+}
+
+.editor-box {
+  width: 100%;
+}
+
+.button-class {
+  white-space: nowrap;
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 12REM;
+  font-size: 16px;
+}
+
+.button-class:hover {
+  background-color: #2d8a55;
+  border-color: #1c5d39;
+  cursor: pointer;
+}
+
 </style>

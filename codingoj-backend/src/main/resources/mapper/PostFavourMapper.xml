@@ -6,22 +6,22 @@
 
     <resultMap id="BaseResultMap" type="com.longoj.top.model.entity.PostFavour">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="postId" column="postId" jdbcType="BIGINT"/>
-        <result property="userId" column="userId" jdbcType="BIGINT"/>
-        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="postId" column="post_id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,postId,userId,
-        createTime,updateTime
+        id,post_id,user_id,
+    create_time,update_time
     </sql>
 
     <select id="listFavourPostByPage"
             resultType="com.longoj.top.model.entity.Post">
         select p.*
         from post p
-                 join (select postId from post_favour where userId = #{favourUserId}) pf
-                      on p.id = pf.postId ${ew.customSqlSegment}
+                 join (select post_id from post_favour where user_id = #{favourUserId}) pf
+                      on p.id = pf.post_id ${ew.customSqlSegment}
     </select>
 </mapper>

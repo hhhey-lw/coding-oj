@@ -42,9 +42,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         String sortOrder = commentPageQueryRequest.getSortOrder();
 
         QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(postId != 0, "postId", postId);
-        queryWrapper.isNull("parentId");
-        queryWrapper.eq("isDelete", 0);
+        queryWrapper.eq(postId != 0, "post_id", postId);
+        queryWrapper.isNull("parent_id");
+        queryWrapper.eq("is_delete", 0);
         queryWrapper.orderBy(StrUtil.isNotBlank(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC), sortField);
 
         return queryWrapper;
@@ -52,9 +52,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     public List<Comment> getCommentByRootCommentId(Long rootCommentId) {
         QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("rootCommentId", rootCommentId);
-        queryWrapper.eq("isDelete", 0);
-        queryWrapper.orderByAsc("createTime");
+        queryWrapper.eq("root_commentId", rootCommentId);
+        queryWrapper.eq("is_delete", 0);
+        queryWrapper.orderByAsc("create_time");
         List<Comment> commentList = lambdaQuery()
                 .eq(Comment::getRootCommentId, rootCommentId)
                 .eq(Comment::getIsDelete, 0)
@@ -118,9 +118,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (commentAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (commentAddRequest.getParentId() == null || commentAddRequest.getRootCommentId() == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
+        // if (commentAddRequest.getParentId() == null || commentAddRequest.getRootCommentId() == null) {
+        //     throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        // }
         if (commentAddRequest.getPostId() == null || commentAddRequest.getPostId() == 0L) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

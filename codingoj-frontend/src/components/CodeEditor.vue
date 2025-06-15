@@ -2,7 +2,7 @@
   <div
     id="code-editor"
     ref="codeEditorRef"
-    style="min-height: 400px; height: 60vh"
+    style="height: 100%; min-height: 400px;"
   />
 </template>
 
@@ -94,10 +94,10 @@ onMounted(() => {
     automaticLayout: true,
     colorDecorators: true,
     minimap: {
-      enabled: true,
+      enabled: false,
     },
     readOnly: false,
-    theme: "vs-dark",
+    theme: "vs",
   });
 
   // 编辑时监听内容变化

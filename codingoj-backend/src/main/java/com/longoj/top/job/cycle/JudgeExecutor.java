@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.concurrent.*;
 
 @Slf4j
-@Component
+// @Component
 public class JudgeExecutor {
 
     private static final Integer QUEUE_CAPACITY = 128;

@@ -19,7 +19,7 @@
 
     <!-- 聊天对话框组件 -->
     <ChatView
-    style="max-width: 100vw; overflow-x: scroll"
+    style="max-width: 90vw !important; overflow-x: hidden"
     :visible="chatDialogVisible"
     @update:visible="chatDialogVisible = $event"/>
   </div>

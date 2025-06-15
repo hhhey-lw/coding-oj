@@ -9,23 +9,23 @@
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="tags" column="tags" jdbcType="VARCHAR"/>
-        <result property="thumbNum" column="thumbNum" jdbcType="BIGINT"/>
-        <result property="favourNum" column="favourNum" jdbcType="BIGINT"/>
-        <result property="userId" column="userId" jdbcType="BIGINT"/>
-        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
-        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+        <result property="thumbNum" column="thumb_num" jdbcType="BIGINT"/>
+        <result property="favourNum" column="favour_num" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,title,content,tags,
-        thumbNum,favourNum,userId,
-        createTime,updateTime,isDelete
+        thumb_num,favour_num,user_id,
+        create_time,update_time,is_delete
     </sql>
 
     <select id="listPostWithDelete" resultType="com.longoj.top.model.entity.Post">
         select *
         from post
-        where updateTime >= #{minUpdateTime}
+        where update_time >= #{minUpdateTime}
     </select>
 </mapper>

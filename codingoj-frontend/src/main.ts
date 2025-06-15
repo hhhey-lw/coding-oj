@@ -9,11 +9,12 @@ import "@/access";
 import "bytemd/dist/index.css";
 
 
-import TDesign from 'tdesign-vue-next';
+// import TDesign from 'tdesign-vue-next';
+// .use(TDesign)
+
 import TDesignChat from '@tdesign-vue-next/chat'; // 引入chat组件
 
 createApp(App).use(store).use(router)
     .use(ArcoVue)
-    .use(TDesign)
     .use(TDesignChat)
     .mount("#app");

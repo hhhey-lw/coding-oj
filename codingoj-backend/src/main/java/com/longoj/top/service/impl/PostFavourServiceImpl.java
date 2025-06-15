@@ -84,8 +84,8 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
                 // 帖子收藏数 - 1
                 result = postService.update()
                         .eq("id", postId)
-                        .gt("favourNum", 0)
-                        .setSql("favourNum = favourNum - 1")
+                        .gt("favour_num", 0)
+                        .setSql("favour_num = favour_num - 1")
                         .update();
                 return result ? -1 : 0;
             } else {
@@ -98,7 +98,7 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
                 // 帖子收藏数 + 1
                 result = postService.update()
                         .eq("id", postId)
-                        .setSql("favourNum = favourNum + 1")
+                        .setSql("favour_num = favour_num + 1")
                         .update();
                 return result ? 1 : 0;
             } else {

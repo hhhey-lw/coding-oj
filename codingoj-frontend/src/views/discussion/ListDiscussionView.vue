@@ -1,9 +1,16 @@
 <template>
   <a-space direction="vertical" size="large" class="mobile-class box-class" style="margin: 0 auto; display: flex; justify-content: center;">
     <!-- 搜索与发帖 -->
-    <a-row justify="space-between">
-      <a-input-search placeholder="搜索讨论..." style="width: 300px; max-width: 70%" v-model="queryParams.searchText" @search="doSearchPost" search-button/>
-      <a-button type="primary" @click="submitPost">+ 发布讨论</a-button>
+    <a-row justify="space-between" style="display: flex">
+      <div>
+        <a-input
+            placeholder="搜索讨论..."
+            v-model="queryParams.searchText"
+            class="discussion-search"
+        />
+        <button class="btn-class search-class" @click="doSearchPost">搜索</button>
+      </div>
+      <button class="btn-class" @click="submitPost">+ 发布讨论</button>
     </a-row>
 
     <!-- 筛选标签 -->
@@ -45,8 +52,11 @@
           <a-typography-title :heading="5">{{ item.title }}</a-typography-title>
 
           <!-- 内容摘要 -->
+<!--          <div>-->
+<!--            <Viewer :value="item.content" :plugins="plugins"/>-->
+<!--          </div>-->
           <a-typography-paragraph :ellipsis="{ rows: 2 }">
-            {{ item.content }}
+            {{ parseMarkdownPreview(item.content) }}
           </a-typography-paragraph>
 
           <!-- 底部信息 -->
@@ -107,6 +117,10 @@ import {
 } from '@arco-design/web-vue/es/icon';
 import * as path from "node:path";
 
+// import { Viewer } from '@bytemd/vue-next'
+// import frontmatter from "@bytemd/plugin-frontmatter";
+// const plugins = [frontmatter()];
+
 // =====> 变量定义 <=====
 const router = useRouter();
 
@@ -117,7 +131,7 @@ let queryParams = ref<PostQueryRequest>({
   current: 1,
   pageSize: 4,
   total: 0,
-  sortField: 'createTime',
+  sortField: 'create_time',
   sortOrder: 'descend',
   searchText: ''
 })
@@ -204,14 +218,14 @@ const handleRadioChange = (value: string) => {
   console.log("Radio Change: ", value);
   if (value === 'hot') {
     queryParams.value.searchText = '';
-    queryParams.value.sortField = 'pageView';
+    queryParams.value.sortField = 'page_view';
     queryParams.value.sortOrder = 'descend';
     queryParams.value.current = 1;
     loadPostData();
   }
   else {
     queryParams.value.searchText = '';
-    queryParams.value.sortField = 'createTime';
+    queryParams.value.sortField = 'create_time';
     queryParams.value.sortOrder = 'descend';
     queryParams.value.current = 1;
     loadPostData();
@@ -225,7 +239,7 @@ const doSearchPost = () => {
       alert("查询内容不能为空！");
       return ;
     }
-    queryParams.value.sortField = 'createTime';
+    queryParams.value.sortField = 'create_time';
     queryParams.value.sortOrder = 'descend';
     queryParams.value.current = 1;
     loadPostData();
@@ -234,6 +248,47 @@ const doSearchPost = () => {
   }
 }
 
+// 解析Markdown预览
+// 解析 Markdown 为纯文本预览（只保留前两行）
+const parseMarkdownPreview = (markdown?: string): string => {
+  if (!markdown) return '';
+
+  // 移除代码块
+  let text = markdown.replace(/```[\s\S]*?```/g, '[代码块]');
+
+  // 移除图片
+  text = text.replace(/!\[.*?\]\(.*?\)/g, '[图片]');
+
+  // 移除链接但保留文本
+  text = text.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+
+  // 移除标题符号 #
+  text = text.replace(/^#+\s/gm, '');
+
+  // 移除粗体、斜体等格式
+  // text = text.replace(/\*\*(.*?)\*\*/g, '$1');
+  // text = text.replace(/\*(.*?)\*/g, '$1');
+  // text = text.replace(/__(.*?)__/g, '$1');
+  // text = text.replace(/_(.*?)_/g, '$1');
+
+  // 移除表情符号
+  // text = text.replace(/:[a-z_]+:/g, '');
+
+  // 保留复选框文本
+  text = text.replace(/- \[([ x])\] (.*)/g, '• $2');
+
+  // 保留普通列表文本
+  text = text.replace(/- (.*)/g, '• $1');
+  text = text.replace(/\d+\. (.*)/g, '• $1');
+
+  // 分割为行
+  // const lines = text.split('\n')
+  //     .filter(line => line.trim() !== '')  // 过滤空行
+  //     .slice(0, 2);  // 只取前两行
+
+  // return lines.join('\n') + (lines.length < 2 && markdown.length > text.length ? '...' : '');
+  return text;
+};
 
 // =====> 路由部分 <=====
 const toDetailDiscussion = (id:number) => {
@@ -260,4 +315,29 @@ const submitPost = () => {
     width: 100%;
   }
 }
+
+.btn-class {
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 8REM;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-class {
+  width: 4REM;
+}
+
+.discussion-search {
+  max-width: 60%;
+  border: 2px solid #8ebc8e;
+}
+
+.discussion-search:focus{
+  border: 2px solid #2d8a55 !important;
+}
+
 </style>

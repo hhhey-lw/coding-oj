@@ -195,25 +195,8 @@ const formatJudgeConfig = (judgeConfig: string) => {
 </script>
 
 <style scoped>
-#manageQuestionView .ellipsed-column {
-  width: 150px;
-  height: 50px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.test-case {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.test-case-item {
-  margin-bottom: 8px;
-}
-
-.inline {
-  display: inline;
-  white-space: pre-wrap;
+#manageQuestionView {
+  max-width: 1280px;
+  margin: 0 auto;
 }
 </style>

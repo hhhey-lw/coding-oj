@@ -3,15 +3,15 @@
     <!-- 顶部标题 -->
     <!-- 顶部标题（新增月份显示） -->
     <h2 class="stats-title">
-      {{ currentYear }}年{{ currentMonth }}月提交统计
-      <span class="month-switcher">
-        <a-button type="primary" shape="round" @click="prevMonth" style="margin-right: 1REM;">
+      <span style="font-size: 28px;margin-left: 0.5REM;margin-right: 0.5REM">{{ currentYear }}</span>年<span style="font-size: 28px;margin-left: 0.5REM;margin-right: 0.5REM">{{ currentMonth }}</span>月提交统计
+      <div class="month-switcher">
+        <button @click="prevMonth" class="btn-class">
           <IconDoubleLeft/>
-        </a-button>
-        <a-button type="primary" shape="round" @click="nextMonth" :disabled="btnStatus">
+        </button>
+        <button @click="nextMonth" :disabled="btnStatus" class="btn-class">
           <IconDoubleRight/>
-        </a-button>
-      </span>
+        </button>
+      </div>
     </h2>
 
     <!-- 统计卡片区域 -->
@@ -22,7 +22,7 @@
             <div class="stat-icon success">
               <icon-check-circle-fill />
             </div>
-            <a-typography-title :heading="5">{{ totalSubmissions }}</a-typography-title>
+            <a-typography-title :heading="6">{{ totalSubmissions }}</a-typography-title>
             <a-typography-text type="secondary">总提交</a-typography-text>
           </a-space>
         </a-card>
@@ -34,7 +34,7 @@
             <div class="stat-icon primary">
               <icon-trophy />
             </div>
-            <a-typography-title :heading="5">{{ acceptedSubmissions }}</a-typography-title>
+            <a-typography-title :heading="6">{{ acceptedSubmissions }}</a-typography-title>
             <a-typography-text type="secondary">通过数</a-typography-text>
           </a-space>
         </a-card>
@@ -45,7 +45,7 @@
           <a-space direction="vertical" align="center">
             <div class="stat-icon warning">
             </div>
-            <a-typography-title :heading="5">{{ acceptanceRate }}%</a-typography-title>
+            <a-typography-title :heading="6">{{ acceptanceRate }}%</a-typography-title>
             <a-typography-text type="secondary">通过率</a-typography-text>
           </a-space>
         </a-card>
@@ -65,7 +65,7 @@
         <a-popover v-for="(day, index) in submitSummaryList" :key="index">
           <div
               class="calendar-day"
-              :style="{ backgroundColor: isSubmitted(Number(day.yearMonthDay.substring(8, 10))) ? '#14a9f8' : '#f5f5f5' }"
+              :style="{ backgroundColor: isSubmitted(Number(day.yearMonthDay.substring(8, 10))) ? '#8ebc8e' : '#f5f5f5' }"
           ></div>
           <template #content>
             <p>提交：{{day.submitCount}}次</p>
@@ -337,12 +337,41 @@ onMounted(() => {
 .calendar-day:hover {
   transform: scale(1.05);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+.month-switcher {
+  display: inline;
 }
 
 @media screen and (max-width: 768px)  {
   .mobile-class {
     width: 100%;
   }
+  .month-switcher {
+    display: block;
+  }
+}
+
+.btn-class {
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 0.5REM;
+  height: 36px;
+  color: white;
+  width: 2.5REM;
+  font-size: 16px;
+  margin-right: 1REM;
+  margin-top: 0.5REM;
+  margin-bottom: 0.5REM;
+  cursor: pointer;
+}
+
+/* 置灰（禁用）状态 */
+.btn-class:disabled {
+  background-color: #cccccc;
+  border: 2px solid #595959;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 </style>

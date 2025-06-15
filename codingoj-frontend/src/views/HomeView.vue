@@ -169,4 +169,18 @@ loadAnimateCSS();
     width: 100%;
   }
 }
+
+/* 加快所有animate.css动画的速度 */
+:deep(.animate__animated) {
+  --animate-duration: 1s !important; /* 将默认值从1s改为0.5s */
+}
+
+/* 对于延迟的动画，也减少延迟时间 */
+:deep(.animate__delay-1s) {
+  --animate-delay: 0.5s !important;
+}
+
+:deep(.animate__delay-2s) {
+  --animate-delay: 0.8s !important;
+}
 </style>

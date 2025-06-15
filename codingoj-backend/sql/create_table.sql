@@ -140,4 +140,16 @@ PRIMARY KEY (`userId`, `yearMonthDay`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户提交汇总表';
 
 
-
+CREATE TABLE `mq_local_message` (
+`message_id` VARCHAR(128) NOT NULL COMMENT '消息唯一ID',
+`exchange_name` VARCHAR(255) NOT NULL COMMENT '目标交换机名称',
+`routing_key` VARCHAR(255) NOT NULL COMMENT '目标路由键',
+`payload` TEXT COMMENT '消息体内容 (根据实际情况选择 TEXT, JSON, BLOB 等)',
+`status` TINYINT NOT NULL DEFAULT 0 COMMENT '消息状态: 0-待发送, 1-发送成功, 2-发送失败待重试, 3-最终失败',
+`retry_count` INT NOT NULL DEFAULT 0 COMMENT '重试次数',
+`error_cause` TEXT COMMENT '上次发送失败原因',
+`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+PRIMARY KEY (`message_id`),
+INDEX `idx_status_retry_updated` (`status`, `retry_count`, `updated_at`) COMMENT '用于补偿任务查询的索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='RabbitMQ 本地消息表 (兜底方案)';

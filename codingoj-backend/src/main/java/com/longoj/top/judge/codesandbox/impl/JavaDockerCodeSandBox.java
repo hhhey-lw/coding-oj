@@ -44,6 +44,8 @@ public class JavaDockerCodeSandBox implements CodeSandBox {
 
     private static final String JAVA_CONTAINER_IMAGE_NAME = "swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/library/openjdk:17-jdk-slim";
 
+    // private static final String CPP_CONTAINER_IMAGE_NAME = "swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/library/gcc:11-alpine";
+
     private Boolean IS_FIRST_PULL = true;
 
 

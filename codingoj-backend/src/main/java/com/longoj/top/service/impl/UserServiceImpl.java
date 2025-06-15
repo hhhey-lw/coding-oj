@@ -69,7 +69,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         synchronized (userAccount.intern()) {
             // 账户不能重复
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("userAccount", userAccount);
+            queryWrapper.eq("user_account", userAccount);
             long count = this.baseMapper.selectCount(queryWrapper);
             if (count > 0) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
@@ -104,8 +104,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
         // 查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userAccount", userAccount);
-        queryWrapper.eq("userPassword", encryptPassword);
+        queryWrapper.eq("user_account", userAccount);
+        queryWrapper.eq("user_password", encryptPassword);
         User user = this.baseMapper.selectOne(queryWrapper);
         // 用户不存在
         if (user == null) {
@@ -133,8 +133,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
         // 查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userAccount", userAccount);
-        queryWrapper.eq("userPassword", encryptPassword);
+        queryWrapper.eq("user_account", userAccount);
+        queryWrapper.eq("user_password", encryptPassword);
         User user = this.baseMapper.selectOne(queryWrapper);
         // 用户不存在
         if (user == null) {
@@ -284,11 +284,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String sortOrder = userQueryRequest.getSortOrder();
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(id != null && id != 0, "id", id);
-        queryWrapper.eq(StringUtils.isNotBlank(unionId), "unionId", unionId);
-        queryWrapper.eq(StringUtils.isNotBlank(mpOpenId), "mpOpenId", mpOpenId);
-        queryWrapper.eq(StringUtils.isNotBlank(userRole), "userRole", userRole);
-        queryWrapper.like(StringUtils.isNotBlank(userProfile), "userProfile", userProfile);
-        queryWrapper.like(StringUtils.isNotBlank(userName), "userName", userName);
+        queryWrapper.eq(StringUtils.isNotBlank(unionId), "union_id", unionId);
+        queryWrapper.eq(StringUtils.isNotBlank(mpOpenId), "mp_open_id", mpOpenId);
+        queryWrapper.eq(StringUtils.isNotBlank(userRole), "user_role", userRole);
+        queryWrapper.like(StringUtils.isNotBlank(userProfile), "user_profile", userProfile);
+        queryWrapper.like(StringUtils.isNotBlank(userName), "user_name", userName);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
@@ -302,9 +302,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String newPasswordSALT = DigestUtils.md5DigestAsHex((SALT + userUpdatePwdRequest.getNewPwd()).getBytes());
 
         return update()
-                .set("userPassword", newPasswordSALT)
+                .set("user_password", newPasswordSALT)
                 .eq("id", loginUser.getId())
-                .eq("userPassword", encryptPassword)
+                .eq("user_password", encryptPassword)
                 .update();
     }
 }

@@ -22,4 +22,5 @@ public interface QuestionSubmitService extends IService<QuestionSubmit> {
 
     Page<QuestionSubmitVO> getQuestionSubmitVOPage(Page<QuestionSubmit> page, User loginUser);
 
+    boolean isQuestionSubmitExecuted(Long id);
 }

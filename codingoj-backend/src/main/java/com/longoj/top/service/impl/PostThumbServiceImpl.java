@@ -73,8 +73,8 @@ public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb
                 // 点赞数 - 1
                 result = postService.update()
                         .eq("id", postId)
-                        .gt("thumbNum", 0)
-                        .setSql("thumbNum = thumbNum - 1")
+                        .gt("thumb_num", 0)
+                        .setSql("thumb_num = thumb_num - 1")
                         .update();
                 return result ? -1 : 0;
             } else {
@@ -87,7 +87,7 @@ public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb
                 // 点赞数 + 1
                 result = postService.update()
                         .eq("id", postId)
-                        .setSql("thumbNum = thumbNum + 1")
+                        .setSql("thumb_num = thumb_num + 1")
                         .update();
                 return result ? 1 : 0;
             } else {

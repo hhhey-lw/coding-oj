@@ -26,9 +26,9 @@
             justify-content: space-between;
           "
         >
-          <a-button type="primary" html-type="submit" style="width: 120px">
+          <button html-type="submit" style="width: 120px" class="button-class">
             登录
-          </a-button>
+          </button>
           <a-link @click="goRegister">新用户注册</a-link>
         </div>
       </a-form-item>
@@ -81,4 +81,20 @@ const goRegister = async () => {
 </script>
 
 <style>
+.button-class {
+  white-space: nowrap;
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 6REM;
+  font-size: 16px;
+}
+
+.button-class:hover {
+  background-color: #2d8a55;
+  border-color: #1c5d39;
+  cursor: pointer;
+}
 </style>

@@ -106,7 +106,7 @@ const loadData = async () => {
   const res = await QuestionSubmitControllerService.listQuestionSubmitByPageUsingPost(
       {
         ...searchParams.value,
-        sortField: "createTime",
+        sortField: "create_time",
         sortOrder: "descend",
       }
   );

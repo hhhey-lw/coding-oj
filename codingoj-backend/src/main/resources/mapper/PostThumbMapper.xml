@@ -5,15 +5,15 @@
 <mapper namespace="com.longoj.top.mapper.PostThumbMapper">
 
     <resultMap id="BaseResultMap" type="com.longoj.top.model.entity.PostThumb">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="postId" column="postId" jdbcType="BIGINT"/>
-            <result property="userId" column="userId" jdbcType="BIGINT"/>
-            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="postId" column="post_id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,postId,
-        userId,createTime,updateTime
+        id,post_id,
+    user_id,create_time,update_time
     </sql>
 </mapper>

@@ -3,7 +3,7 @@ import { Message } from "@arco-design/web-vue";
 
 // http://longcoding.top:8101
 const myAxios = axios.create({
-  baseURL: "http://longcoding.top:8101",
+  baseURL: "http://localhost:8101",
   timeout: 60000,
   withCredentials: true,
 });

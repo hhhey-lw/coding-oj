@@ -42,7 +42,7 @@
       </a-form-item>
 
       <a-form-item style="display: inline">
-        <a-button type="primary"  shape="round" @click="doSubmit">提交</a-button>
+        <button class="button-class"  @click="doSubmit">搜索</button>
       </a-form-item>
     </a-form>
     <a-divider/>
@@ -95,7 +95,7 @@
     </a-table>
     <a-divider/>
 
-    <UserCheckInView  :xs="24" :sm="24" :md="8" :lg="8" :xl="8" style="box-shadow: 0 2px 8px rgba(0, 0, 0, .05); border-radius: 12px"/>
+    <UserCheckInView  :xs="24" :sm="24" :md="8" :lg="8" :xl="8" style="box-shadow: 0 2px 8px rgba(0, 0, 0, .05); border-radius: 12px; width: 60%"/>
   </div>
 </template>
 
@@ -357,6 +357,23 @@ const doSubmit = () => {
     width: 100%;
     margin: 0 auto;
   }
+}
+
+.button-class {
+  white-space: nowrap;
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 5REM;
+  font-size: 16px;
+}
+
+.button-class:hover {
+  background-color: #2d8a55;
+  border-color: #1c5d39;
+  cursor: pointer;
 }
 
 </style>

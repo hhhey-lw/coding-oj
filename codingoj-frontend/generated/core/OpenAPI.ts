@@ -21,7 +21,7 @@ export type OpenAPIConfig = {
 
 // http://longcoding.top:8101
 export const OpenAPI: OpenAPIConfig = {
-    BASE: 'http://longcoding.top:8101',
+    BASE: 'http://localhost:8101',
     VERSION: '1.0',
     WITH_CREDENTIALS: true,
     CREDENTIALS: 'include',

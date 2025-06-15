@@ -2,8 +2,8 @@
   <div id="viewQuestionView">
     <a-row :gutter="[24, 24]">
       <a-col class="quesBox" :md="12" :xs="24">
-        <a-tabs default-active-key="question">
-          <a-tab-pane key="question" title="题目">
+        <a-tabs default-active-key="question" style="overflow-y: scroll">
+          <a-tab-pane key="question" title="题目" justify>
             <a-card v-if="question" :title="question.title">
               <a-descriptions
                 title="判题条件"
@@ -31,39 +31,48 @@
                 </a-space>
               </template>
             </a-card>
-          </a-tab-pane>
-          <a-tab-pane key="comment" title="评论" disabled> 评论区</a-tab-pane>
-          <a-tab-pane key="answer" title="答案"> 暂时无法查看答案</a-tab-pane>
+          </a-tab-pane >
+          <a-tab-pane key="comment" title="评论" disabled justify> 评论区</a-tab-pane>
+          <a-tab-pane key="answer" title="答案" justify> 暂时无法查看答案</a-tab-pane>
         </a-tabs>
       </a-col>
-      <a-col class="quesBox" :md="12" :xs="24">
-        <a-form :model="form" layout="inline">
+      <a-col class="quesBox editor-container" :md="12" :xs="24">
+        <a-form :model="form" layout="inline" style="display: flex; width: 100%; justify-content: space-between; margin-bottom: 10px;">
           <a-form-item
-            field="language"
-            label="编程语言"
-            style="min-width: 240px"
+              field="language"
+              label="编程语言"
           >
             <a-select
-              v-model="form.language"
-              :style="{ width: '320px' }"
-              placeholder="选择编程语言"
+                v-model="form.language"
+                :style="{ width: '200px' }"
+                placeholder="选择编程语言"
             >
-              <a-option>java</a-option>
-<!--              <a-option>cpp</a-option>-->
-<!--              <a-option>go</a-option>-->
-<!--              <a-option>html</a-option>-->
+              <a-option value="java">Java</a-option>
+<!--              <a-option value="cpp">C++</a-option>-->
+              <!--<a-option>cpp</a-option>-->
+              <!--<a-option>go</a-option>-->
+              <!--<a-option>html</a-option>-->
             </a-select>
           </a-form-item>
+
+          <a-form-item>
+            <button @click="doSubmit" class="btn-class">
+              提交代码
+            </button>
+          </a-form-item>
         </a-form>
-        <CodeEditor
-          :value="form.code as string"
-          :language="form.language"
-          :handle-change="changeCode"
-        />
-        <a-divider size="0" />
-        <a-button type="primary" style="min-width: 200px" @click="doSubmit">
-          提交代码
-        </a-button>
+        <!-- 为编辑器添加 flex-grow -->
+        <div class="editor-wrapper">
+          <CodeEditor
+              :value="form.code as string"
+              :language="form.language"
+              :handle-change="changeCode"
+          />
+        </div>
+<!--        <a-divider size="0" />-->
+<!--        <a-button type="primary" style="width: 100%" @click="doSubmit">-->
+<!--          提交代码-->
+<!--        </a-button>-->
       </a-col>
     </a-row>
   </div>
@@ -156,6 +165,9 @@ const changeCode = (value: string) => {
 #viewQuestionView {
   max-width: 1400px;
   margin: 0 auto;
+  height: calc(100vh - 90px); /* 假设顶部导航栏高度为64px */
+  padding-bottom: -20px;
+  overflow: hidden;
 }
 
 #viewQuestionView .arco-space-horizontal .arco-space-item {
@@ -163,7 +175,42 @@ const changeCode = (value: string) => {
 }
 
 .quesBox {
-  //height: calc(100vh - 4REM);
-  //overflow: scroll;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 1REM;
 }
+
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden !important;
+}
+
+.editor-wrapper {
+  flex: 1;
+  min-height: 400px;
+  position: relative;
+}
+
+.btn-class {
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 5%;
+  height: 36px;
+  color: white;
+  width: 6REM;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  #viewQuestionView {
+    overflow: scroll;
+  }
+  .quesBox {
+    height: 100%;
+  }
+}
+
 </style>

@@ -13,6 +13,10 @@ export default {
   }),
   actions: {
     async getLoginUser({ commit, state }, payload) {
+      if (state.loginUser.userName !== "未登录" && state.token !== '') {
+        console.log("已登录");
+        return;
+      }
       // 从远程请求获取登录信息
       const res = await UserControllerService.getLoginUserUsingGet();
       if (res.code === 0) {
