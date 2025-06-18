@@ -1,13 +1,16 @@
-package com.longoj.top.judge;
+package com.longoj.top.judge.codesandbox.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.longoj.top.common.ErrorCode;
+import com.longoj.top.common.RedisKeyUtil;
 import com.longoj.top.exception.BusinessException;
-import com.longoj.top.judge.codesandbox.CodeSandBox;
+import com.longoj.top.judge.codesandbox.JudgeManager;
+import com.longoj.top.judge.codesandbox.service.CodeSandBox;
 import com.longoj.top.judge.codesandbox.CodeSandboxFactory;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeRequest;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeResponse;
 import com.longoj.top.judge.codesandbox.model.JudgeContext;
+import com.longoj.top.judge.codesandbox.service.JudgeService;
 import com.longoj.top.mapper.UserSubmitSummaryMapper;
 import com.longoj.top.model.dto.question.JudgeCase;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;
@@ -15,12 +18,15 @@ import com.longoj.top.model.entity.Question;
 import com.longoj.top.model.entity.QuestionSubmit;
 import com.longoj.top.model.enums.JudgeInfoMessageEnum;
 import com.longoj.top.model.enums.QuestionSubmitStatusEnum;
+import com.longoj.top.service.QuestionPassedService;
 import com.longoj.top.service.QuestionService;
 import com.longoj.top.service.QuestionSubmitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.ZoneId;
@@ -42,6 +48,9 @@ public class JudgeServiceImpl implements JudgeService {
     private QuestionService questionService;
 
     @Resource
+    private QuestionPassedService questionPassedService;
+
+    @Resource
     private JudgeManager judgeManager;
 
     @Resource
@@ -52,13 +61,14 @@ public class JudgeServiceImpl implements JudgeService {
 
     private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    // @Resource
-    // private
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Value("${codesandbox.type:example}")
     private String CODE_SANDBOX_TYPE;
 
     @Override
+    @Transactional
     public JudgeInfo doJudge(QuestionSubmit questionSubmit) {
         // 1. 信息检查
         if (questionSubmit == null) {
@@ -128,9 +138,14 @@ public class JudgeServiceImpl implements JudgeService {
             Date submitCreateTime = questionSubmit.getCreateTime();
             String format = submitCreateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(DATE_TIME_FORMATTER);
             if (judgeInfo.getMessage().equals(JudgeInfoMessageEnum.ACCEPTED.getValue())) {
+                // 更新每日提交汇总
                 userSubmitSummaryMapper.updateSubmitSummary(questionSubmit.getUserId(), format, 0, 1);
                 // 更新题目通过数
                 questionService.updateQuestionAcceptedNum(question.getId());
+                // 更新用户通过的题目
+                questionPassedService.addUserPassedQuestion(question.getId(), questionSubmit.getUserId());
+                // 删除缓存
+                stringRedisTemplate.delete(RedisKeyUtil.getUserPassedQuestionKey(questionSubmit.getUserId()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,5 +153,26 @@ public class JudgeServiceImpl implements JudgeService {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "修改每日提交汇总，通过数 失败");
         }
         return judgeInfo;
+    }
+
+    @Override
+    public void setJudgeInfoFailed(Long id) {
+        // 1. 信息检查
+        if (id == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "提交不存在");
+        }
+
+        // 2. 更新提交状态
+        QuestionSubmit updateObj = new QuestionSubmit();
+        updateObj.setId(id);
+        updateObj.setStatus(QuestionSubmitStatusEnum.ERROR.getStatus());
+        updateObj.setJudgeInfo(JSONUtil.toJsonStr(JudgeInfo.builder()
+                .message(QuestionSubmitStatusEnum.ERROR.getValue())
+                .build()));
+
+        boolean update = questionSubmitService.updateById(updateObj);
+        if (!update) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "提交状态更新失败");
+        }
     }
 }

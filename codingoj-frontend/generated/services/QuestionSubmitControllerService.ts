@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { BaseResponse_List_UserSubmitInfoVO_ } from '../models/BaseResponse_List_UserSubmitInfoVO_';
 import type { BaseResponse_long_ } from '../models/BaseResponse_long_';
 import type { BaseResponse_Page_QuestionSubmitVO_ } from '../models/BaseResponse_Page_QuestionSubmitVO_';
 import type { QuestionSubmitAddRequest } from '../models/QuestionSubmitAddRequest';
@@ -71,6 +72,29 @@ questionSubmitQueryRequest: QuestionSubmitQueryRequest,
             method: 'POST',
             url: '/api/question_submit/list/page/user',
             body: questionSubmitQueryRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * getTopPassedQuestionUserList
+     * @param topNumber topNumber
+     * @returns BaseResponse_List_UserSubmitInfoVO_ OK
+     * @throws ApiError
+     */
+    public static getTopPassedQuestionUserListUsingGet(
+topNumber: number,
+): CancelablePromise<BaseResponse_List_UserSubmitInfoVO_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/question_submit/topPassed/{topNumber}',
+            path: {
+                'topNumber': topNumber,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

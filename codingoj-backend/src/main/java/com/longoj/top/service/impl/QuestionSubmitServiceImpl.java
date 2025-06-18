@@ -1,15 +1,16 @@
 package com.longoj.top.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.longoj.top.common.ErrorCode;
+import com.longoj.top.common.RedisKeyUtil;
 import com.longoj.top.constant.CommonConstant;
 import com.longoj.top.exception.BusinessException;
-import com.longoj.top.job.cycle.JudgeExecutor;
 import com.longoj.top.job.publisher.JudgeServicePublisher;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;
 import com.longoj.top.model.dto.questionsubmit.QuestionSubmitAddRequest;
@@ -21,6 +22,8 @@ import com.longoj.top.model.enums.QuestionSubmitLanguageEnum;
 import com.longoj.top.model.enums.QuestionSubmitStatusEnum;
 import com.longoj.top.model.vo.QuestionSubmitVO;
 import com.longoj.top.model.vo.QuestionVO;
+import com.longoj.top.model.vo.UserSubmitInfoVO;
+import com.longoj.top.model.vo.UserVO;
 import com.longoj.top.service.QuestionService;
 import com.longoj.top.service.QuestionSubmitService;
 import com.longoj.top.mapper.QuestionSubmitMapper;
@@ -28,12 +31,13 @@ import com.longoj.top.service.UserService;
 import com.longoj.top.utils.SqlUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +54,9 @@ implements QuestionSubmitService{
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     // @Resource
     // private JudgeExecutor judgeExecutor;
@@ -152,8 +159,29 @@ implements QuestionSubmitService{
 
     @Override
     public boolean isQuestionSubmitExecuted(Long id) {
-        Integer status = getById(id).getStatus();
+        QuestionSubmit questionSubmit = baseMapper.selectById(id);
+        if (questionSubmit == null) {
+            return true;
+        }
+        Integer status = questionSubmit.getStatus();
         return !(status.intValue() == QuestionSubmitStatusEnum.WAITING.getStatus().intValue());
+    }
+
+    /* 从Redis中查询Top10通过数最多的用户 */
+    @Override
+    public List<UserSubmitInfoVO> getTopPassedQuestionUserList(int topNumber) {
+        if (topNumber <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Top number must be greater than 0");
+        }
+
+        String topPassedNumberKey = RedisKeyUtil.getTopPassedNumberKey();
+        String res = stringRedisTemplate.opsForValue().get(topPassedNumberKey);
+
+        if (StrUtil.isBlank(res)){
+            return Collections.emptyList();
+        }
+
+        return JSONUtil.toList(res, UserSubmitInfoVO.class);
     }
 
     private QuestionSubmitVO getQuestionSubmitVO(QuestionSubmit questionSubmit, User loginUser) {

@@ -1,7 +1,8 @@
-package com.longoj.top.judge.codesandbox.strategy;
+package com.longoj.top.judge.codesandbox.strategy.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.longoj.top.judge.codesandbox.model.JudgeContext;
+import com.longoj.top.judge.codesandbox.strategy.JudgeStrategy;
 import com.longoj.top.model.dto.question.JudgeCase;
 import com.longoj.top.model.dto.question.JudgeConfig;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;
@@ -10,7 +11,7 @@ import com.longoj.top.model.enums.JudgeInfoMessageEnum;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DefaultJudgeStrategy implements JudgeStrategy{
+public class DefaultJudgeStrategy implements JudgeStrategy {
     @Override
     public JudgeInfo doJudge(JudgeContext judgeContext) {
         // 1. 先获取信息

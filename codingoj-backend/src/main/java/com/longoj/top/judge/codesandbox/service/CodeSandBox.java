@@ -1,4 +1,4 @@
-package com.longoj.top.judge.codesandbox;
+package com.longoj.top.judge.codesandbox.service;
 
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeRequest;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeResponse;

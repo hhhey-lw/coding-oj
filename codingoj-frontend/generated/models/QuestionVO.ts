@@ -15,6 +15,7 @@ export type QuestionVO = {
     favourNum?: number;
     id?: number;
     judgeConfig?: JudgeConfig;
+    passed?: boolean;
     sourceCode?: string;
     submitNum?: number;
     tags?: Array<string>;

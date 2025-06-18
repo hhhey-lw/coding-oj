@@ -1,8 +1,8 @@
 <template>
   <a-space direction="vertical" size="large" class="mobile-class box-class" style="margin: 0 auto; display: flex; justify-content: center;">
     <!-- 搜索与发帖 -->
-    <a-row justify="space-between" style="display: flex">
-      <div>
+    <a-row justify="space-between" style="display: flex; flex-direction: row">
+      <div class="mobile-header-class">
         <a-input
             placeholder="搜索讨论..."
             v-model="queryParams.searchText"
@@ -314,6 +314,14 @@ const submitPost = () => {
   .mobile-class {
     width: 100%;
   }
+
+  .btn-class {
+    width: 6REM;
+  }
+
+  .mobile-header-class {
+    width: 60% !important;
+  }
 }
 
 .btn-class {
@@ -323,12 +331,13 @@ const submitPost = () => {
   height: 36px;
   color: white;
   width: 8REM;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 
 .search-class {
   width: 4REM;
+  font-size: 14px;
 }
 
 .discussion-search {
@@ -338,6 +347,12 @@ const submitPost = () => {
 
 .discussion-search:focus{
   border: 2px solid #2d8a55 !important;
+}
+
+:deep(.arco-table-pagination) {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
 }
 
 </style>

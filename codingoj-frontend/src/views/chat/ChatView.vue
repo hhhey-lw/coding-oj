@@ -1,7 +1,8 @@
 <template>
   <TDialog
-      style="z-index: 999; max-width: 100vw"
+      style="z-index: 999; max-width: 90vw !important; overflow-x: hidden"
       top="1REM"
+      v-bind="$attrs"
       :onBeforeOpen="loadUserData"
       :visible="visible"
       @update:visible="$emit('update:visible', $event)"
@@ -394,7 +395,7 @@ const loadUserData = () => {
 
 @media screen and (max-width: 768px) {
   .mobile-width-chat-box {
-    width: 100vw;
+    width: 90vw;
   }
 }
 

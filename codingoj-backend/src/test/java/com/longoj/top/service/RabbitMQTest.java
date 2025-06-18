@@ -1,5 +1,6 @@
 package com.longoj.top.service;
 
+import com.longoj.top.config.JudgeMQConfig;
 import com.longoj.top.model.entity.MqLocalMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -23,31 +24,31 @@ public class RabbitMQTest implements RabbitTemplate.ConfirmCallback, RabbitTempl
     @Test
     public void testRabbitMQConnection() throws InterruptedException {
         // 这里可以添加测试代码来验证 RabbitMQ 的连接和功能
-        // rabbitTemplate.setConfirmCallback(this); // 设置 ConfirmCallback
-        // rabbitTemplate.setReturnsCallback(this); // 设置 ReturnsCallback
-        //
-        // // 例如，发送一条消息到队列，或者从队列中接收消息
-        // for (int i = 1; i <= 1; i++) {
-        //     String message = "Test message " + i;
-        //
-        //     // 先存本地方法表
-        //     MqLocalMessage mqLocalMessage = new MqLocalMessage();
-        //     mqLocalMessage.setMessageId("test-message-id-"+i);
-        //     mqLocalMessage.setExchangeName("judgeExchange");
-        //     mqLocalMessage.setRoutingKey("judgeRoutingKey");
-        //     mqLocalMessage.setPayload(message);
-        //     mqLocalMessage.setStatus(0); // 0-待发送
-        //     mqLocalMessage.setRetryCount(0);
-        //     mqLocalMessageService.save(mqLocalMessage);
-        //
-        //     // 发送消息到 RabbitMQ 队列
-        //     CorrelationData correlationData = new CorrelationData();
-        //     correlationData.setId("test-message-id-"+i);
-        //     rabbitTemplate.convertAndSend("judgeExchange1", "judgeRoutingKey", message, correlationData);
-        //     System.out.println("Sent message: " + message);
-        //     System.out.println();
-        //     Thread.sleep(1000); // 等待1秒钟
-        // }
+        rabbitTemplate.setConfirmCallback(this); // 设置 ConfirmCallback
+        rabbitTemplate.setReturnsCallback(this); // 设置 ReturnsCallback
+
+        // 例如，发送一条消息到队列，或者从队列中接收消息
+        for (int i = 1; i <= 1; i++) {
+            String message = "Test message " + i;
+
+            // 先存本地方法表
+            // MqLocalMessage mqLocalMessage = new MqLocalMessage();
+            // mqLocalMessage.setMessageId("test2-message-id-"+i);
+            // mqLocalMessage.setExchangeName("judgeExchange");
+            // mqLocalMessage.setRoutingKey("judgeRoutingKey");
+            // mqLocalMessage.setPayload(message);
+            // mqLocalMessage.setStatus(0); // 0-待发送
+            // mqLocalMessage.setRetryCount(0);
+            // mqLocalMessageService.save(mqLocalMessage);
+
+            // 发送消息到 RabbitMQ 队列
+            CorrelationData correlationData = new CorrelationData();
+            correlationData.setId("test-message-id-"+i);
+            rabbitTemplate.convertAndSend(JudgeMQConfig.EXCHANGE_NAME, JudgeMQConfig.ROUTING_KEY, message, correlationData);
+            System.out.println("Sent message: " + message);
+            System.out.println();
+            Thread.sleep(10000); // 等待1秒钟
+        }
     }
 
     /**

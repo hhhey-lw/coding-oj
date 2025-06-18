@@ -1,7 +1,7 @@
-package com.longoj.top.judge.codesandbox.impl;
+package com.longoj.top.judge.codesandbox.service.impl;
 
 import cn.hutool.core.collection.ListUtil;
-import com.longoj.top.judge.codesandbox.CodeSandBox;
+import com.longoj.top.judge.codesandbox.service.CodeSandBox;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeRequest;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeResponse;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;

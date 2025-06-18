@@ -82,6 +82,8 @@ public class QuestionVO implements Serializable {
      */
     private UserVO userVO;
 
+    private boolean isPassed;
+
     /**
      * 创建时间
      */

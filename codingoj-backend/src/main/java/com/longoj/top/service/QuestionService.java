@@ -1,9 +1,11 @@
 package com.longoj.top.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.longoj.top.model.dto.question.QuestionAddRequest;
 import com.longoj.top.model.dto.question.QuestionQueryRequest;
+import com.longoj.top.model.dto.question.QuestionUpdateRequest;
 import com.longoj.top.model.entity.Question;
 import com.longoj.top.model.vo.QuestionVO;
 
@@ -32,4 +34,9 @@ public interface QuestionService extends IService<Question> {
 
     int updateQuestionAcceptedNum(Long questionId);
 
+    Boolean updateQuestion(QuestionUpdateRequest questionUpdateRequest);
+
+    boolean isPassed(Long questionId, Long userId);
+
+    Page<QuestionVO> getQuestionVO(QuestionQueryRequest questionQueryRequest, HttpServletRequest request);
 }

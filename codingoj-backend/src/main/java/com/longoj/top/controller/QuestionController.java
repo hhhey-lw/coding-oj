@@ -12,6 +12,7 @@ import com.longoj.top.exception.BusinessException;
 import com.longoj.top.exception.ThrowUtils;
 import com.longoj.top.model.dto.question.*;
 import com.longoj.top.model.entity.Question;
+import com.longoj.top.model.entity.User;
 import com.longoj.top.model.vo.QuestionVO;
 import com.longoj.top.service.QuestionService;
 import com.longoj.top.service.UserService;
@@ -47,10 +48,7 @@ public class QuestionController {
     @PostMapping("/add")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Long> addQuestion(@RequestBody QuestionAddRequest questionAddRequest, HttpServletRequest request) {
-
-        Long newQuestionId = questionService.addQuestion(questionAddRequest, request);
-
-        return ResultUtils.success(newQuestionId);
+        return ResultUtils.success(questionService.addQuestion(questionAddRequest, request));
     }
 
     /**
@@ -81,34 +79,7 @@ public class QuestionController {
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> updateQuestion(@RequestBody QuestionUpdateRequest questionUpdateRequest) {
-        if (questionUpdateRequest == null || questionUpdateRequest.getId() <= 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        Question question = new Question();
-        BeanUtils.copyProperties(questionUpdateRequest, question);
-        // 标签
-        List<String> tags = questionUpdateRequest.getTags();
-        if (tags != null) {
-            question.setTags(JSONUtil.toJsonStr(tags));
-        }
-        // 判题用例
-        List<JudgeCase> judgeCase = questionUpdateRequest.getJudgeCase();
-        if (judgeCase != null) {
-            question.setJudgeCase(JSONUtil.toJsonStr(judgeCase));
-        }
-        // 判题配置
-        JudgeConfig judgeConfig = questionUpdateRequest.getJudgeConfig();
-        if (judgeConfig != null) {
-            question.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
-        }
-        // 参数校验
-        questionService.validQuestion(question, false);
-        long id = questionUpdateRequest.getId();
-        // 判断是否存在
-        Question oldQuestion = questionService.getById(id);
-        ThrowUtils.throwIf(oldQuestion == null, ErrorCode.NOT_FOUND_ERROR);
-        boolean result = questionService.updateById(question);
-        return ResultUtils.success(result);
+        return ResultUtils.success(questionService.updateQuestion(questionUpdateRequest));
     }
 
     /**
@@ -168,20 +139,9 @@ public class QuestionController {
      */
     @ApiOperation("分页获取题目封装列表")
     @PostMapping("/list/page/vo")
-    public BaseResponse<Page<QuestionVO>> listQuestionVOByPage(@RequestBody QuestionQueryRequest questionQueryRequest) {
-        if (questionQueryRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        long current = questionQueryRequest.getCurrent();
-        long size = questionQueryRequest.getPageSize();
-        // 限制爬虫
-        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
-        Page<Question> questionPage = questionService.page(new Page<>(current, size),
-                questionService.getQueryWrapper(questionQueryRequest));
-        Page<QuestionVO> questionVOPage = new Page<>(current, size, questionPage.getTotal());
-        List<QuestionVO> questionVO = questionService.getQuestionVOPage(questionPage.getRecords());
-        questionVOPage.setRecords(questionVO);
-        return ResultUtils.success(questionVOPage);
+    public BaseResponse<Page<QuestionVO>> listQuestionVOByPage(@RequestBody QuestionQueryRequest questionQueryRequest,
+                                                               HttpServletRequest request) {
+        return ResultUtils.success(questionService.getQuestionVO(questionQueryRequest, request));
     }
 
     // endregion

@@ -1,4 +1,4 @@
-package com.longoj.top.judge.codesandbox.impl;
+package com.longoj.top.judge.codesandbox.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
@@ -13,7 +13,7 @@ import com.github.dockerjava.api.model.PullResponseItem;
 import com.github.dockerjava.api.model.Statistics;
 import com.github.dockerjava.api.model.Volume;
 import com.github.dockerjava.core.command.ExecStartResultCallback;
-import com.longoj.top.judge.codesandbox.CodeSandBox;
+import com.longoj.top.judge.codesandbox.service.CodeSandBox;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeRequest;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeResponse;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;

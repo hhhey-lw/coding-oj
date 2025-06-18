@@ -65,7 +65,7 @@
         <a-popover v-for="(day, index) in submitSummaryList" :key="index">
           <div
               class="calendar-day"
-              :style="{ backgroundColor: isSubmitted(Number(day.yearMonthDay.substring(8, 10))) ? '#8ebc8e' : '#f5f5f5' }"
+              :style="{ backgroundColor: isSubmitted(Number(day.yearMonthDay.substring(8, 10))) ? '#40c463' : '#dae2ef' }"
           ></div>
           <template #content>
             <p>提交：{{day.submitCount}}次</p>
@@ -321,11 +321,12 @@ onMounted(() => {
 
 @media screen and (min-width: 768px) {
   .calendar-grid {
-    max-width: 40%;
+    max-width: 80%;
     margin-left: auto;
     margin-right: auto;
   }
 }
+
 
 .calendar-day {
   max-width: 2REM;
@@ -358,7 +359,7 @@ onMounted(() => {
   border-radius: 0.5REM;
   height: 36px;
   color: white;
-  width: 2.5REM;
+  width: 2REM;
   font-size: 16px;
   margin-right: 1REM;
   margin-top: 0.5REM;

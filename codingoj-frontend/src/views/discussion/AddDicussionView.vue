@@ -25,6 +25,7 @@
 import { ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
 import {PostAddRequest, PostControllerService} from "../../../generated";
+import { Modal } from '@arco-design/web-vue';
 import message from "@arco-design/web-vue/es/message";
 
 let form = ref<PostAddRequest>({
@@ -34,20 +35,24 @@ let form = ref<PostAddRequest>({
 });
 
 const doSubmit = async () => {
-  console.log(form.value);
-
-  const res = await PostControllerService.addPostUsingPost(
-      form.value
-  );
-  if (res.code === 0) {
-    message.success("创建成功");
-    alert("发布成功！");
-    form.value.content = "";
-    form.value.tags = "";
-    form.value.title = "";
-  } else {
-    message.error("创建失败，" + res.message);
-  }
+  Modal.confirm({
+    title: '确认发布吗？',
+    content: `确定要发布编写的帖子吗？`,
+    onOk: async () => {
+      const res = await PostControllerService.addPostUsingPost(
+          form.value
+      );
+      if (res.code === 0) {
+        message.success("创建成功");
+        alert("发布成功！");
+        form.value.content = "";
+        form.value.tags = "";
+        form.value.title = "";
+      } else {
+        message.error("创建失败，" + res.message);
+      }
+    }
+  })
 };
 
 const onContentChange = (value: string) => {

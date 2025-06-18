@@ -1,8 +1,9 @@
 package com.longoj.top.judge.codesandbox;
 
-import com.longoj.top.judge.codesandbox.impl.JavaDockerCodeSandBox;
-import com.longoj.top.judge.codesandbox.impl.JavaNativeCodeSandBox;
-import com.longoj.top.judge.codesandbox.impl.SampleCodeSandBox;
+import com.longoj.top.judge.codesandbox.service.CodeSandBox;
+import com.longoj.top.judge.codesandbox.service.impl.JavaDockerCodeSandBox;
+import com.longoj.top.judge.codesandbox.service.impl.JavaNativeCodeSandBox;
+import com.longoj.top.judge.codesandbox.service.impl.SampleCodeSandBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

@@ -15,6 +15,9 @@ import DetailDiscussion from "@/views/discussion/DetailDiscussionView.vue";
 import UserInfoView from "@/views/user/UserInfoView.vue";
 import AddDicussionView from "@/views/discussion/AddDicussionView.vue";
 import ChatView from "@/views/chat/ChatView.vue";
+import {IconComputer, IconHome, IconList, IconPalette, IconSettings} from "@arco-design/web-vue/es/icon";
+import TagQuestionListView from "@/views/question/TagQuestionListView.vue";
+import ManagerCenterView from "@/views/user/ManagerCenterView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -41,21 +44,33 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "首页",
     component: HomeView,
+    meta: {
+      icon: IconHome,
+    }
   },
   {
     path: "/questions",
     name: "题库",
     component: QuestionsView,
+    meta: {
+      icon: IconList,
+    }
   },
   {
     path: "/question_submit",
-    name: "提交记录",
+    name: "评测",
     component: QuestionSubmitView,
+    meta: {
+      icon: IconComputer
+    }
   },
   {
     path: "/discussion",
     name: "讨论",
     component: ViewDiscussion,
+    meta: {
+      icon: IconPalette
+    }
   },
   {
     path: "/discussion/detail/:id",
@@ -87,11 +102,12 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/add/question",
-    name: "创建题目",
-    component: AddQuestionView,
+    path: "/manager/center",
+    name: "管理中心",
+    component: ManagerCenterView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
+      icon: IconSettings
     },
   },
   {
@@ -109,6 +125,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: ManageQuestionView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
+      hideInMenu: true,
     },
   },
   {
@@ -127,5 +144,13 @@ export const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
       access: ACCESS_ENUM.USER,
     }
-  }
+  },{
+    path: "/questions/tag/:tagId",
+    name: "标签题集",
+    component: TagQuestionListView,
+    meta: {
+      hideInMenu: true,
+      access: ACCESS_ENUM.USER,
+    }
+  },
 ];

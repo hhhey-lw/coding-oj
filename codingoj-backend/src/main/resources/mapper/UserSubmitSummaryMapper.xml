@@ -35,5 +35,20 @@
         WHERE user_id = #{userId} AND year_month_day = #{yyyyMMDD}
     </select>
 
+    <select id="selectUserPassedCountsByTopNumber"
+            resultType="com.longoj.top.model.dto.questionsubmit.UserPassedCountDTO">
+        SELECT
+            user_id AS userId,
+            SUM(accept_count) AS passedCount,
+            SUM(submit_count) AS submitCount
+        FROM
+            user_submit_summary
+        GROUP BY
+            user_id
+        ORDER BY
+            passedCount DESC, submitCount DESC
+        LIMIT #{topNumber}
+    </select>
+
 
 </mapper>

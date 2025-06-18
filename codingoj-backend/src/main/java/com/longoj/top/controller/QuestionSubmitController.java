@@ -1,6 +1,7 @@
 package com.longoj.top.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.longoj.top.annotation.RateLimit;
 import com.longoj.top.common.BaseResponse;
 import com.longoj.top.common.ErrorCode;
 import com.longoj.top.common.ResultUtils;
@@ -10,16 +11,16 @@ import com.longoj.top.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.longoj.top.model.entity.QuestionSubmit;
 import com.longoj.top.model.entity.User;
 import com.longoj.top.model.vo.QuestionSubmitVO;
-import com.longoj.top.service.QuestionService;
-import com.longoj.top.service.QuestionSubmitService;
-import com.longoj.top.service.UserCheckInService;
-import com.longoj.top.service.UserService;
+import com.longoj.top.model.vo.UserSubmitInfoVO;
+import com.longoj.top.model.vo.UserVO;
+import com.longoj.top.service.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 // @Api(tags = "题目提交接口")
@@ -44,6 +45,7 @@ public class QuestionSubmitController {
      * @param questionSubmitAddRequest
      * @param request
      */
+    @RateLimit
     @ApiOperation("提交代码")
     @PostMapping("/do")
     public BaseResponse<Long> doSubmit(@RequestBody QuestionSubmitAddRequest questionSubmitAddRequest,
@@ -75,7 +77,14 @@ public class QuestionSubmitController {
         Page<QuestionSubmit> page = questionSubmitService.page(new Page<>(current, pageSize),
                 questionSubmitService.getQueryWrapper(questionSubmitQueryRequest));
 
-        final User loginUser = userService.getLoginUser(request);
+        User loginUser;
+        try {
+            loginUser = userService.getLoginUser(request);
+        } catch (Exception e) {
+            log.error("获取登录用户失败", e);
+            // 如果获取登录用户失败，则不返回用户信息
+            loginUser = null;
+        }
         // final User loginUser = UserContext.getUser();
         return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(page, loginUser));
     }
@@ -94,5 +103,10 @@ public class QuestionSubmitController {
                 questionSubmitService.getQueryWrapper(questionSubmitQueryRequest));
 
         return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(page, loginUser));
+    }
+
+    @GetMapping("/topPassed/{topNumber}")
+    public BaseResponse<List<UserSubmitInfoVO>> getTopPassedQuestionUserList(@PathVariable int topNumber) {
+        return ResultUtils.success(questionSubmitService.getTopPassedQuestionUserList(topNumber));
     }
 }

@@ -8,6 +8,10 @@ import com.longoj.top.model.dto.questionsubmit.QuestionSubmitQueryRequest;
 import com.longoj.top.model.entity.QuestionSubmit;
 import com.longoj.top.model.entity.User;
 import com.longoj.top.model.vo.QuestionSubmitVO;
+import com.longoj.top.model.vo.UserSubmitInfoVO;
+import com.longoj.top.model.vo.UserVO;
+
+import java.util.List;
 
 /**
 * @author 韦龙
@@ -23,4 +27,6 @@ public interface QuestionSubmitService extends IService<QuestionSubmit> {
     Page<QuestionSubmitVO> getQuestionSubmitVOPage(Page<QuestionSubmit> page, User loginUser);
 
     boolean isQuestionSubmitExecuted(Long id);
+
+    List<UserSubmitInfoVO> getTopPassedQuestionUserList(int topNumber);
 }

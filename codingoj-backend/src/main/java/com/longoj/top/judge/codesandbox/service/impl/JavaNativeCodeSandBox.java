@@ -1,4 +1,4 @@
-package com.longoj.top.judge.codesandbox.impl;
+package com.longoj.top.judge.codesandbox.service.impl;
 
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.io.FileUtil;
@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.dfa.FoundWord;
 import cn.hutool.dfa.WordTree;
 import cn.hutool.json.JSONUtil;
-import com.longoj.top.judge.codesandbox.CodeSandBox;
+import com.longoj.top.judge.codesandbox.service.CodeSandBox;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeRequest;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeResponse;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;

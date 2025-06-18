@@ -9,20 +9,19 @@
           </div>
         </a-menu-item>
         <a-menu-item v-for="item in visibleRoutes" :key="item.path">
+          <template #icon v-if="item.meta?.icon">
+            <component :is="item.meta.icon" />
+          </template>
           {{ item.name }}
         </a-menu-item>
       </a-menu>
     </a-col>
     <a-col flex="100px">
       <!-- 未登录状态 -->
-      <a-link
-          v-if="!store.state.user.loginUser.id"
-          class="user-avatar-link"
-          @click="gologin"
-      >
-        <icon-user class="avatar-icon" />
-        <span>未登录</span>
-      </a-link>
+      <bottom v-if="!store.state.user.loginUser.id"
+              class="login-btn-class"
+              @click="gologin"><icon-user/>登录
+      </bottom>
 
       <!-- 已登录状态 -->
       <a-popover
@@ -85,6 +84,17 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import checkAccess from "@/access/checkAccess";
 import ACCESS_ENUM from "@/access/accessEnum";
+
+import {
+  IconHome,
+  IconList,
+  IconComputer,
+  IconPalette,
+  IconUser,
+  IconExport,
+  IconTrophy,
+  IconSettings
+} from '@arco-design/web-vue/es/icon';
 
 const router = useRouter();
 const store = useStore();
@@ -167,5 +177,21 @@ const gologin = () => {
 
 .logo {
   height: 48px;
+}
+/* 新增样式以调整图标和文字间距 */
+:deep(.arco-menu-item .arco-menu-icon) {
+  margin-right: 4px !important; /* 将默认的 8px 或其他值调整为您希望的大小，例如 4px 或 2px */
+}
+
+.login-btn-class {
+  background-color: #8ebc8e;
+  border: 2px solid #2d8a55;
+  border-radius: 1REM;
+  height: 36px;
+  color: white;
+  width: 8REM;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0.5REM;
 }
 </style>

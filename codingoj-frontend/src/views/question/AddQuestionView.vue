@@ -1,5 +1,17 @@
 <template>
   <div id="addQuestionView"style="width: 90vw;">
+    <!-- 顶部导航栏 -->
+    <header class="header" v-if="isUpdatePage">
+      <a-button type="text" class="back-btn" @click="handleBack">
+        <template #icon><icon-left /></template>
+        返回
+      </a-button>
+      <div class="header-right">
+        <a-button type="text" class="share-btn" @click="() => Message.info('分享功能尚未实现')">
+          <template #icon><icon-share-alt /></template>
+        </a-button>
+      </div>
+    </header>
     <h2 style="text-align: center">创建题目</h2>
     <a-form :model="form" label-align="right">
       <a-form-item field="title" label="标题">
@@ -124,11 +136,16 @@ import { onMounted, ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
 import { QuestionControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
-import { useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
+import {Message} from "@arco-design/web-vue";
+import {IconLeft, IconShareAlt} from "@arco-design/web-vue/es/icon";
 
+const router = useRouter();
 const route = useRoute();
 // 如果页面地址包含 update，视为更新页面
 const updatePage = route.path.includes("update");
+
+const isUpdatePage = ref(updatePage);
 
 let form = ref({
   title: "",
@@ -196,6 +213,10 @@ const loadData = async () => {
 onMounted(() => {
   loadData();
 });
+
+const handleBack = () => {
+  router.back();
+};
 
 const doSubmit = async () => {
   console.log(form.value);
@@ -295,5 +316,25 @@ const onSourceCodeChange = (value: string) => {
 :deep(.bytemd-fullscreen) {
   z-index: 999 !important;
 }
-
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+.back-btn, .share-btn {
+  color: #555;
+  font-size: 16px;
+}
+.back-btn:hover, .share-btn:hover {
+  background-color: #f0f2f5 !important;
+  color: #165dff !important;
+}
 </style>

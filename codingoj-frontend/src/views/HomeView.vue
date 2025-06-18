@@ -1,186 +1,306 @@
 <template>
-  <div class="oj-home-container">
+  <div class="container">
+    <!-- 左侧标题区域 -->
+    <div class="left-section">
+      <h1 class="main-title">专注于算法竞赛的在线评测系统</h1>
 
-    <a-layout>
-      <!-- 主内容区 -->
-      <a-layout-content class="content">
-        <div class="hero-section">
-          <h1 class="title animate__animated animate__fadeInDown">𝐂𝐨𝐝𝐢𝐧𝐠 𝐎𝐉</h1>
-          <p class="subtitle animate__animated animate__fadeInUp">专注于算法竞赛的在线评测系统</p>
-          <p class="description animate__animated animate__fadeInUp animate__delay-1s">
-            为编程爱好者提供专业的算法训练平台
-          </p>
+      <p class="description">
+        为编程爱好者提供专业的算法训练平台。
+      </p>
 
-          <!-- 使用栅格系统的按钮组 -->
-          <a-row
-              class="action-buttons animate__animated animate__fadeInUp animate__delay-2s"
-              :gutter="[16, 16]"
-          >
-            <a-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-              <a-button
-                  type="primary"
-                  size="large"
-                  class="start-btn"
-                  @click="toQuestionPage"
-                  block
-              >
-                <template #icon>
-                  <icon-code />
-                </template>
-                开始刷题
-              </a-button>
-            </a-col>
+      <!-- 按钮组 -->
+      <div class="button-group">
+        <button class="btn btn-primary" @click="toQuestionPage">
+          <span class="icon">✨</span>
+          开始刷题
+        </button>
+        <button class="btn btn-secondary" @click="toSubmitPage">
+          <span class="icon">⬇️</span>
+          查看排名
+        </button>
+      </div>
 
-            <a-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-              <a-button
-                  size="large"
-                  class="contest-btn"
-                  block
-              >
-                <template #icon>
-                  <icon-trophy />
-                </template>
-                参加比赛
-              </a-button>
-            </a-col>
-
-            <a-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-              <a-button
-                  size="large"
-                  class="rank-btn"
-                  block
-              >
-                <template #icon>
-                  <icon-trophy />
-                </template>
-                查看排名
-              </a-button>
-            </a-col>
-          </a-row>
+      <!-- 特点列表 -->
+      <div class="features-list">
+        <div class="feature-item">
+          <span class="check-icon">✓</span>
+          <span class="feature-text">安全可靠</span>
         </div>
-      </a-layout-content>
-    </a-layout>
+        <div class="feature-item">
+          <span class="check-icon">✓</span>
+          <span class="feature-text">极速响应</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧展示区域 -->
+    <div class="right-section">
+      <div class="coloring-pages-container">
+        <!-- 标题 -->
+        <div class="coloring-title">
+          <span class="dear-text">CODING</span>
+          <span class="page-text">CODING OJ</span>
+        </div>
+
+        <!-- 涂色页面卡片 -->
+        <div class="coloring-pages-cards">
+          <div class="coloring-page-card" style="z-index: 3;">
+            <img :src="rocket" alt="rocket" class="coloring-page-img">
+          </div>
+
+          <div class="coloring-page-card" style="z-index: 4;">
+            <img :src="monster" alt="monster" class="coloring-page-img">
+          </div>
+        </div>
+
+        <!-- 底部色条 -->
+        <div class="color-indicators">
+          <div class="color-bar color-red"></div>
+          <div class="color-bar color-orange"></div>
+          <div class="color-bar color-yellow"></div>
+          <div class="color-bar color-green"></div>
+          <div class="color-bar color-blue"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import '@arco-design/web-vue/dist/arco.css';
-import {
-  IconCode,
-  IconTrophy,
-} from '@arco-design/web-vue/es/icon';
-import { useRouter } from "vue-router";
+import rocket from "@/assets/rocket.png";
+import monster from "@/assets/monster.png";
 
-// 路由跳转
+// 这里可以添加组件逻辑
+import {useRouter} from "vue-router";
 const router = useRouter();
+
 const toQuestionPage = () => {
-  router.push({
-    path: `/questions`,
-  });
+  router.push({ path: 'questions' });
 };
 
-
-// 引入Animate.css CDN
-const loadAnimateCSS = () => {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
-  document.head.appendChild(link);
+const toSubmitPage = () => {
+  router.push({ path: 'question_submit' });
 };
 
-loadAnimateCSS();
 </script>
 
 <style scoped>
-.oj-home-container {
-  height: 100vh;
-  background-color: #fff;
-}
-
-.content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 128px);
-  padding: 24px;
-}
-
-.hero-section {
-  text-align: center;
-  max-width: 800px;
+.container {
+  width: 80%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #ffffff;
 }
 
-.title {
-  font-size: 48px;
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+}
+
+/* 左侧区域样式 */
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-title {
+  font-size: 2.5rem;
   font-weight: bold;
-  margin-bottom: 16px;
-  color: #00b96b;
-}
-
-.subtitle {
-  font-size: 20px;
+  margin-bottom: 20px;
   color: #333;
-  margin-bottom: 8px;
 }
 
 .description {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 32px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #555;
 }
 
-.action-buttons {
-  margin-top: 32px;
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-.start-btn {
-  background-color: #165dff;
-  border-color: #165dff;
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.contest-btn,
-.rank-btn {
-  color: #00b96b;
-  border-color: #00b96b;
+.btn-primary {
+  background-color: #f5f3ec;
+  color: #333;
+  border: none;
 }
 
-.contest-btn:hover,
-.rank-btn:hover {
-  background-color: rgba(0, 185, 107, 0.1);
+.btn-secondary {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
 }
 
+.icon {
+  font-size: 1.2rem;
+}
 
-/* 响应式调整 */
-@media (max-width: 768px) {
-  .title {
-    font-size: 36px;
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+}
+
+.check-icon {
+  color: #4CAF50;
+}
+
+/* 右侧区域样式 */
+.right-section {
+  min-width: 40%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coloring-pages-container {
+  width: 70%;
+  position: relative;
+  padding: 20px;
+  background-color: #f5f3ec;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+@media screen and (max-width: 768px) {
+  .coloring-pages-container {
+    width: 70vw;
   }
 
-  .subtitle {
-    font-size: 18px;
-  }
-
-  .description {
-    font-size: 14px;
-  }
-
-  .action-buttons {
-    width: 100%;
+  .coloring-pages-cards {
+    height: 350px;
   }
 }
 
-/* 加快所有animate.css动画的速度 */
-:deep(.animate__animated) {
-  --animate-duration: 1s !important; /* 将默认值从1s改为0.5s */
+@media screen and (min-width: 768px) {
+  .container {
+    margin-top: -100px;
+  }
 }
 
-/* 对于延迟的动画，也减少延迟时间 */
-:deep(.animate__delay-1s) {
-  --animate-delay: 0.5s !important;
+.coloring-title {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
 }
 
-:deep(.animate__delay-2s) {
-  --animate-delay: 0.8s !important;
+.dear-text {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  display: block;
+  color: #e0c0a0;
 }
+
+.page-text {
+  font-size: 1.5rem;
+  display: block;
+  color: #555;
+}
+
+.coloring-pages-cards {
+  position: relative;
+  height: 400px;
+  margin: 30px 0;
+}
+
+.coloring-page-card {
+  margin-top: 50px;
+  position: absolute;
+  width: 80%;
+  max-width: 350px;
+  height: 80%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.coloring-page-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* 页面层叠顺序和位置 */
+.coloring-page-card:nth-child(1) {
+  top: -10%;
+  left: 10%;
+  transform-origin: bottom left;
+  z-index: 3;
+  transform: rotate(-10deg);
+}
+
+.coloring-page-card:nth-child(2) {
+  top: 20%;
+  right: 5%;
+  transform-origin: top right;
+  z-index: 2;
+  transform: rotate(5deg);
+}
+
+.coloring-page-card:hover {
+  transform: scale(1.05);
+  z-index: 33;
+}
+
+/**.coloring-page-card:nth-child(3) {
+  bottom: 10%;
+  right: 15%;
+  transform-origin: bottom right;
+  z-index: 1;
+} **/
+
+.color-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.color-bar {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.color-red    { background-color: #f48c8c; }
+.color-orange { background-color: #f4c38c; }
+.color-yellow { background-color: #f4e08c; }
+.color-green  { background-color: #b4e08c; }
+.color-blue   { background-color: #8cd0e0; }
 </style>

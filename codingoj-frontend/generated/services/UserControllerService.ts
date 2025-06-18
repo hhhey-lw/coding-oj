@@ -196,13 +196,13 @@ userQueryRequest: UserQueryRequest,
     /**
      * 用户登录
      * @param userLoginRequest userLoginRequest
-     * @returns BaseResponse_LoginUserVO_ OK
+     * @returns BaseResponse_string_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static userLoginUsingPost(
 userLoginRequest: UserLoginRequest,
-): CancelablePromise<BaseResponse_LoginUserVO_ | any> {
+): CancelablePromise<BaseResponse_string_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/user/login',

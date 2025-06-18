@@ -72,6 +72,7 @@ import {
   Question,
   QuestionControllerService,
 } from "../../../generated";
+import { Modal } from '@arco-design/web-vue';
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";
@@ -156,15 +157,21 @@ const onPageChange = (page: number) => {
 };
 
 const doDelete = async (question: Question) => {
-  const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.id,
+  Modal.confirm({
+    title: '确认删除',
+    content: `确定要删除题目 "${question.title}" 吗？此操作不可撤销。`,
+    onOk: async () => {
+      const res = await QuestionControllerService.deleteQuestionUsingPost({
+        id: question.id,
+      });
+      if (res.code === 0) {
+        message.success("删除成功");
+        loadData();
+      } else {
+        message.error("删除失败");
+      }
+    }
   });
-  if (res.code === 0) {
-    message.success("删除成功");
-    loadData();
-  } else {
-    message.error("删除失败");
-  }
 };
 
 const router = useRouter();

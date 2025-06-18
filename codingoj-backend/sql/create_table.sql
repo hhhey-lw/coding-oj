@@ -153,3 +153,18 @@ CREATE TABLE `mq_local_message` (
 PRIMARY KEY (`message_id`),
 INDEX `idx_status_retry_updated` (`status`, `retry_count`, `updated_at`) COMMENT '用于补偿任务查询的索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='RabbitMQ 本地消息表 (兜底方案)';
+
+
+-- 用户通过题目记录表
+CREATE TABLE `question_passed`
+(
+    `id`          bigint                             NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `userId`      bigint                             NOT NULL COMMENT '用户ID',
+    `questionId`  bigint                             NOT NULL COMMENT '题目ID',
+    `createTime`  datetime DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
+    `updateTime`  datetime DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `isDelete`    tinyint  DEFAULT 0                 NOT NULL COMMENT '是否删除(0-未删, 1-已删)',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_userId_questionId` (`userId`, `questionId`),
+    KEY `idx_userId` (`userId`)
+) ENGINE = InnoDB COMMENT ='用户通过题目记录表';
