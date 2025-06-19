@@ -235,7 +235,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         List<String> tags = questionQueryRequest.getTags();
         String title = questionQueryRequest.getTitle();
         if (StrUtil.isBlank(title) && CollectionUtil.isEmpty(tags)) {
-            // 如果没有搜索条件，直接返回空结果
+            // 如果没有搜索条件，使用Redis进行缓存
             return getQuestionVOBYRedis(questionQueryRequest, request);
         }
         return getQuestionVOByTagAndSearch(questionQueryRequest, request);
@@ -253,6 +253,12 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         Page<Question> questionPage = page(new Page<>(current, size),
                 getQueryWrapper(questionQueryRequest));
         List<Question> records = questionPage.getRecords();
+
+        if (CollectionUtils.isEmpty(records)) {
+            // 如果没有题目，直接返回空结果
+            return new Page<QuestionVO>(current, size, 0).setRecords(Collections.emptyList());
+        }
+
         List<QuestionVO> questionVOList = getQuestionVOPage(records);
 
         Page<QuestionVO> questionVOPage = new Page<>(current, size, questionPage.getTotal());
@@ -411,8 +417,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         String sortField = questionQueryRequest.getSortField();
         String sortOrder = questionQueryRequest.getSortOrder();
 
-        queryWrapper.like(StringUtils.isNotEmpty(title) && StringUtils.isNotBlank(title), "title", title);
-        queryWrapper.like(StringUtils.isNotEmpty(content) && StringUtils.isNotBlank(content), "content", content);
+        queryWrapper.like(StringUtils.isNotEmpty(title), "title", title);
+        queryWrapper.like(StringUtils.isNotEmpty(content), "content", content);
         //
         if (CollectionUtils.isNotEmpty(tags)) {
             for (String tag : tags) {

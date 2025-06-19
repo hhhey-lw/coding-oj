@@ -27,6 +27,8 @@ import com.longoj.top.utils.JwtTokenUtil;
 import com.longoj.top.utils.SqlUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,6 +51,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 盐值，混淆密码
      */
     public static final String SALT = "yupi";
+
+    public static final String USER_NAME_PREFIX = "用户";
+    public static final String USER_DEFAULT_AVATAR = "http://longcoding.top:8101/api/images/avatar-%d.jpg";
+    public static final String USER_DEFAULT_PROFILE = "这个人很神秘，什么都没有留下";
+
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -80,6 +87,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            user.setUserName(USER_NAME_PREFIX + UUID.randomUUID().toString().substring(0, 8));
+            user.setUserAvatar(String.format(USER_DEFAULT_AVATAR, new Random().nextInt(5) + 1));
+            user.setUserProfile(USER_DEFAULT_PROFILE);
+
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");

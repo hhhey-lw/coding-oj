@@ -13,9 +13,9 @@ import java.util.Arrays;
 
 @Aspect
 @Component
-public class LoggingAspectService {
+public class LoggingAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggingAspectService.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
 
