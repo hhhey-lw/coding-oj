@@ -8,6 +8,7 @@
     </template>
     <!-- 固定按钮 -->
     <a-avatar
+        v-show="!hideAiAvatar"
         :size="64"
         style="position: fixed; bottom: 120px; right: 20px; z-index: 1000; background-color: white"
         @click="showChatDialog">
@@ -27,12 +28,22 @@
 
 <script setup lang="ts">
 import BasicLayout from "@/layouts/BasicLayout.vue";
-import { ref, onMounted } from "vue";
+import {ref, onMounted, watch} from "vue";
 import { useRoute } from "vue-router";
 import ChatView from "@/views/chat/ChatView.vue";
 
 import store from "@/store";
 const route = useRoute();
+
+const hideAiAvatar = ref(false);
+
+// 监听路由变化，在面试页面、登录和注册页面隐藏头像
+watch(() => route.path, (newPath) => {
+  hideAiAvatar.value = newPath.includes('/interview') ||
+      newPath.includes('/interview/simulate') ||
+      newPath.includes('/user/login') ||
+      newPath.includes('/user/register');
+}, { immediate: true });
 
 /**
  * 全局初始化函数，有全局单次调用的代码，都可以写到这里

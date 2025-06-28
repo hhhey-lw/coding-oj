@@ -8,16 +8,14 @@ import cn.hutool.json.JSONUtil;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.command.*;
-import com.github.dockerjava.api.model.Bind;
-import com.github.dockerjava.api.model.PullResponseItem;
-import com.github.dockerjava.api.model.Statistics;
-import com.github.dockerjava.api.model.Volume;
+import com.github.dockerjava.api.model.*;
 import com.github.dockerjava.core.command.ExecStartResultCallback;
 import com.longoj.top.judge.codesandbox.service.CodeSandBox;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeRequest;
 import com.longoj.top.judge.codesandbox.model.ExecuteCodeResponse;
 import com.longoj.top.model.dto.questionsubmit.JudgeInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@ConditionalOnProperty(name = "codesandbox.type", havingValue = "docker")
 public class JavaDockerCodeSandBox implements CodeSandBox {
 
     private static final String LOCAL_FILE_PATH = "/home/admin/app";
@@ -106,9 +105,11 @@ public class JavaDockerCodeSandBox implements CodeSandBox {
         // 2.2 创建容器
         CreateContainerCmd containerCmd = dockerClient.createContainerCmd(JAVA_CONTAINER_IMAGE_NAME);
         CreateContainerResponse containerResponse = containerCmd
-                .withBinds(new Bind(LOCAL_FILE_PATH, new Volume(CONTAINER_FILE_PATH)))
+                .withBinds(new Bind(LOCAL_FILE_PATH, new Volume(CONTAINER_FILE_PATH), AccessMode.ro))
                 .withReadonlyRootfs(true)
                 .withNetworkDisabled(true)
+                .withPrivileged(false)
+                .withCapDrop(Capability.ALL)
                 .withAttachStdin(true)
                 .withAttachStdout(true)
                 .withAttachStderr(true)

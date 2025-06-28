@@ -2,14 +2,23 @@
 node_modules/
 target/
 
+# 密钥
+codingoj-backend/src/main/resources/certs/
+
 # 忽略配置文件（防止提交敏感信息）
 codingoj-backend/src/main/resources/application.yml
 codingoj-backend/src/main/resources/application-test.yml
 codingoj-backend/src/main/resources/application-prod.yml
 
+**/application.yml
 **/application-dev.yml
 **/application-prod.yml
 **/application-test.yml
+
+**/application.yaml
+**/application-dev.yaml
+**/application-prod.yaml
+**/application-test.yaml
 
 # 环境变量文件
 .env

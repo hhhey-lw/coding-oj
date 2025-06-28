@@ -17,16 +17,20 @@ import java.time.Duration;
 
 
 @Configuration
+@ConditionalOnProperty(name = "codesandbox.type", havingValue = "docker")
 public class DockerConfig {
 
     @Value("${docker-java.host}")
     private String DOCKER_HOST;
 
+
     @Bean
     public DockerClient dockerClient() {
+        /* tls证书在/resource/certs中，使用绝对路径即可 */
         DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .withDockerHost(DOCKER_HOST)
-                .withDockerTlsVerify(false)
+                .withDockerTlsVerify(true)
+                .withDockerCertPath("/www/wwwroot/docker-tls/")
                 .build();
 
 

@@ -168,3 +168,38 @@ CREATE TABLE `question_passed`
     UNIQUE KEY `uk_userId_questionId` (`userId`, `questionId`),
     KEY `idx_userId` (`userId`)
 ) ENGINE = InnoDB COMMENT ='用户通过题目记录表';
+
+CREATE TABLE meal (
+meal_id INT AUTO_INCREMENT PRIMARY KEY, -- 套餐唯一标识
+name VARCHAR(100) NOT NULL,               -- 套餐名称，例如 "Free Plan", "Premium Plan"
+description TEXT,                         -- 套餐描述
+price DECIMAL(10, 2) NOT NULL DEFAULT 0.00, -- 套餐价格，例如 0.00 表示免费
+max_interviews_per_day INT DEFAULT NULL,  -- 每日最大面试次数，例如免费用户每天2次
+max_duration_per_interview INT DEFAULT NULL, -- 单次面试最大时长（分钟），例如免费用户每次30分钟
+create_time DATETIME DEFAULT CURRENT_TIMESTAMP, -- 创建时间
+update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新时间
+);
+
+CREATE TABLE user_meal (
+user_meal_id INT AUTO_INCREMENT PRIMARY KEY, -- 用户套餐唯一标识
+user_id BIGINT NOT NULL,                  -- 用户唯一标识
+meal_id INT NOT NULL,                        -- 套餐ID，关联到Package表
+start_date DATETIME NOT NULL,                   -- 订阅开始日期
+end_date DATETIME,                              -- 订阅结束日期（如果为NULL，表示无限期）
+`status` INT NOT NULL DEFAULT 0,   -- 订阅状态，例如 'active':0, 'expired':1, 'canceled':2
+create_time DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 创建时间
+update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新时间
+);
+
+CREATE TABLE user_resume_info (
+user_resume_id INT AUTO_INCREMENT PRIMARY KEY, -- 用户简历唯一标识
+user_id BIGINT NOT NULL,                       -- 用户唯一标识
+position_name VARCHAR(255) NOT NULL,           -- 用户面试岗位名称
+responsibilities TEXT,                         -- 用户面试岗位要求（文本）
+resume_information TEXT,                        -- 用户简历信息（文本）
+create_time DATETIME DEFAULT CURRENT_TIMESTAMP, -- 创建时间
+update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新时间
+);
+
+
+

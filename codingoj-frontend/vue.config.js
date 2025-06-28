@@ -12,7 +12,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8101',
+        target: 'http://longcoding.top:8101',
         changeOrigin: true, // 解决跨域问题
       }
     },
